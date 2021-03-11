@@ -1,3 +1,3 @@
-import { CompareFace } from './core/compre_face.js';
+import { CompreFace } from './core/compre_face.js';
 
-export { CompareFace };
+export { CompreFace }
