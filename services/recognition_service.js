@@ -23,7 +23,7 @@ class RecognitionService {
      * @param {String} image_path 
      * @returns {Promise}
      */
-    recognize_face_from_image(image_path){
+    recognize(image_path){
         let url = `${this.get_full_url()}/recognize`;
 
         return new Promise((resolve, reject) => {
@@ -44,7 +44,7 @@ class RecognitionService {
      * @param {String} image_id 
      * @returns {Promise}
      */
-     verify_face_from_image(image_path, image_id){
+     verify(image_path, image_id){
         let url = `${this.get_full_url()}/${image_id}/verify`;
 
         return new Promise((resolve, reject) => {

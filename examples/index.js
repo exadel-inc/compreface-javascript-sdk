@@ -18,9 +18,15 @@ service.add_subject("../img/girl.png", subject)
     .then(res => console.log(res))
     .catch(err => console.log(err)) 
 
+// Recognize face from image
+let image_id = "image_id_from_face_collection";
+service.recognize("../img/girl.png")
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+
 // Verify face from image
 let image_id = "image_id_from_face_collection";
-service.verify_face_from_image("../img/girl.png", image_id)
+service.verify("../img/girl.png", image_id)
     .then(res => console.log(res))
     .catch(err => console.log(err))
 
