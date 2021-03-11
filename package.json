@@ -1,0 +1,28 @@
+{
+  "name": "compreface-js-sdk",
+  "version": "1.0.0",
+  "description": "JavaScript SDK for CompreFace",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exadel-inc/compreface-javascript-sdk.git"
+  },
+  "keywords": [
+    "javascript",
+    "sdk",
+    "ml"
+  ],
+  "author": "Dostonbek Oripjonov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/exadel-inc/compreface-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/exadel-inc/compreface-javascript-sdk#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "form-data": "^4.0.0"
+  }
+}
