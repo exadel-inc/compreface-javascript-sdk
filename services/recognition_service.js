@@ -19,137 +19,144 @@ class RecognitionService {
     }
 
     /**
-     * Recognize face(s) from given image
-     * @param {String} image_path 
-     * @returns {Promise}
+     * Contains functions related to face collection
+     * @returns {Object}
      */
-    recognize(image_path){
-        let url = `${this.get_full_url()}/recognize`;
+    getFaceCollection(){
+        let url = this.get_full_url();
+        let key = this.key;
 
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.recognize_face_request(image_path, url, this.key)
-                .then(response => {
-                    return resolve(response.data)
+        const faceCollectionFunctions = {
+            /**
+             * View the list of images in face collection
+             * @returns {Promise}
+             */
+            list(){
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.list_request(url, key)
+                        .then(response => {
+                            return resolve(response.data)
+                        })
+                        .catch(error => {
+                            return reject(error.response.data)
+                        })
                 })
-                .catch(error => {
-                    return reject(error.response.data)
+            },
+
+            /**
+             * Add image (with subject) to face collection
+             * @param {String} image_path 
+             * @param {String} subject 
+             * @returns {Promise} 
+             */
+            add(image_path, subject){
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.add_subject_request(image_path, subject, url, key)
+                        .then(response => {
+                            return resolve(response.data)
+                        })
+                        .catch(error => {
+                            return reject(error.response.data)
+                        })
                 })
-        })
+            },
+
+            /**
+             * Recognize face(s) from given image
+             * @param {String} image_path 
+             * @returns {Promise}
+             */
+            recognize(image_path){
+                url = `${url}/recognize`;
+
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.recognize_face_request(image_path, url, key)
+                        .then(response => {
+                            return resolve(response.data)
+                        })
+                        .catch(error => {
+                            return reject(error.response.data)
+                        })
+                })
         
-    }
+            },
 
-    /**
-     * Verify face from image
-     * @param {String} image_path 
-     * @param {String} image_id 
-     * @returns {Promise}
-     */
-     verify(image_path, image_id){
-        let url = `${this.get_full_url()}/${image_id}/verify`;
+            /**
+             * Verify face from image
+             * @param {String} image_path 
+             * @param {String} image_id 
+             * @returns {Promise}
+             */
+            verify(image_path, image_id){
+                url = `${url}/${image_id}/verify`;
 
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.verify_face_request(image_path, url, this.key)
-                .then(response => {
-                    return resolve(response.data)
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.verify_face_request(image_path, url, key)
+                        .then(response => {
+                            return resolve(response.data)
+                        })
+                        .catch(error => {
+                            return reject(error.response.data)
+                        })
                 })
-                .catch(error => {
-                    return reject(error.response.data)
-                })
-        })
-    }
+            },
 
-    /**
-     * Add image (with subject) to face collection
-     * @param {String} image_path 
-     * @param {String} subject 
-     * @returns {Promise} 
-     */
-    add_subject(image_path, subject){
-        let url = this.get_full_url();
+            /**
+             * Delete image by id
+             * @param {String} image_id 
+             * @returns {Promise}
+             */
+            delete(image_id){
+                url = `${url}/${image_id}`;
 
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.add_subject_request(image_path, subject, url, this.key)
-                .then(response => {
-                    return resolve(response.data)
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.delete_request(url, key,)
+                        .then(response => {
+                            return resolve(response.data);
+                        })
+                        .catch(error => {
+                            return reject(error.response.data);
+                        })
                 })
-                .catch(error => {
-                    return reject(error.response.data)
-                })
-        })
-    }
+            },
 
-    /**
-     * View the list of images in face collection
-     * @returns {Promise}
-     */
-    list(){
-        let url = this.get_full_url();
+            /**
+             * Delete image by subject
+             * @param {String} subject 
+             * @returns {Promise}
+             */
+            delete_all_subject(subject){
+                url = `${url}?subject=${subject}`;
 
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.list_request(url, this.key)
-                .then(response => {
-                    return resolve(response.data)
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.delete_all_subject_request(url, key)
+                        .then(response => {
+                            return resolve(response.data);
+                        })
+                        .catch(error => {
+                            return reject(error.response.data);
+                        })
                 })
-                .catch(error => {
-                    return reject(error.response.data)
-                })
-        })
-    }
+            },
 
-    /**
-     * Delete image by id
-     * @param {String} image_id 
-     * @returns {Promise}
-     */
-    delete(image_id){
-        let url = `${this.get_full_url()}/${image_id}` ;
+            /**
+             * Delete all images in face collection
+             * @returns {Promise}
+             */
+            delete_all(){
+                return new Promise((resolve, reject) => {
+                    recognition_endpoints.delete_all_request(url, key)
+                        .then(response => {
+                            return resolve(response.data);
+                        })
+                        .catch(error => {
+                            return reject(error.response.data);
+                        })
+                })
+            }
+        }
 
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.delete_request(url, this.key,)
-                .then(response => {
-                    return resolve(response.data);
-                })
-                .catch(error => {
-                    return reject(error.response.data);
-                })
-        })
-    }
-
-    /**
-     * Delete image by subject
-     * @param {String} subject 
-     * @returns {Promise}
-     */
-    delete_all_subject(subject){
-        let url = `${this.get_full_url()}?subject=${subject}`;
-
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.delete_all_subject_request(url, this.key)
-                .then(response => {
-                    return resolve(response.data);
-                })
-                .catch(error => {
-                    return reject(error.response.data);
-                })
-        })
-    }
-
-    /**
-     * Delete all images in face collection
-     * @returns {Promise}
-     */
-    delete_all(){
-        let url = this.get_full_url();
-
-        return new Promise((resolve, reject) => {
-            recognition_endpoints.delete_all_request(url, this.key)
-                .then(response => {
-                    return resolve(response.data);
-                })
-                .catch(error => {
-                    return reject(error.response.data);
-                })
-        })
+        return faceCollectionFunctions;
     }
 }
 

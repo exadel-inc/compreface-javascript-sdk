@@ -1,7 +1,7 @@
 {
   "name": "compreface-js-sdk",
-  "version": "1.0.0",
-  "description": "JavaScript SDK for CompreFace",
+  "version": "0.4.1",
+  "description": "JavaScript SDK for CompreFace - free and open-source face recognition system from Exadel",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -12,11 +12,13 @@
     "url": "git+https://github.com/exadel-inc/compreface-javascript-sdk.git"
   },
   "keywords": [
-    "javascript",
-    "sdk",
-    "ml"
+    "CompreFace",
+    "Face Recognition",
+    "Face Detection",
+    "Computer Vision",
+    "SDK"
   ],
-  "author": "Dostonbek Oripjonov",
+  "author": "Exadel INC",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/exadel-inc/compreface-javascript-sdk/issues"

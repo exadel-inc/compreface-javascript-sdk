@@ -10,7 +10,7 @@ class CompreFace {
      * @param {String} api_key 
      * @returns {Object}
      */
-    init_recognition_service(api_key){
+    initFaceRecognitionService(api_key){
         let recognition_object = new RecognitionService(this.server, this.port, api_key)
         return recognition_object;
     }
