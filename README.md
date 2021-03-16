@@ -145,7 +145,7 @@ function listFaceCollectionInfo(){
       faces.forEach(faceObjects => {
         let row = document.createElement('tr');
 
-          Object.keys(faceObject).forEach(element => {
+          Object.values(faceObject).forEach(element => {
             let cell = document.createElement('td');
             cell.appendChild(document.createTextNode(element));
             row.appendChild(cell);
