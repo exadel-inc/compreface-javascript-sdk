@@ -147,7 +147,7 @@ function listFaceCollectionInfo(){
 
           Object.keys(faceObject).forEach(element => {
             let cell = document.createElement('td');
-            cell.appendChild(document.createTextNode(cellData));
+            cell.appendChild(document.createTextNode(element));
             row.appendChild(cell);
           })
           tableBody.appendChild(row);
