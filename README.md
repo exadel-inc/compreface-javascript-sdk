@@ -4,7 +4,7 @@ CompreFace is free and open-source face recognition system from Exadel and this 
 
 ## Table of content
 - [Installation](#installation)
-- [Recognition Service](#recognize)
+- [Recognition Service](#recognition)
 - [Usage](#usage)
 
 ## Installation
@@ -18,8 +18,27 @@ npm install compreface-js-sdk
 The main purpose of Recognition Service is operating on images in your face collection. Face collection is an array of objects that every object contains ```image_id``` and ```subject``` to represent added image. Below given useful information about functionaliites of Recognition Service.
 
   - ```faceCollection.add(image_path, subject)``` - to add an image to your face collection. This function takes ```image_path```(path of image) and ```subject```(name) as argument and returns object that contains ```image_id``` and ```subject``` in success  
+  ```
+  {
+    "image_id": "<UUID>",
+    "subject": "<subject>"
+  }
+  ```
+
   - ```faceCollection.list()``` - to return all images in your face collection and returns array of objects in success.
-  - ```faceCollection.recognize(image_path)``` - to recognize faces from givent image. The function takes ```image_path``` as argument and returns below object in success.
+  ```
+  {
+    "faces": [
+      {
+        "image_id": <image_id>,
+        "subject": <subject>
+      },
+      ...
+    ]
+  }
+  ```
+
+  - ```faceCollection.recognize(image_path)``` - to recognize faces from given image. The function takes ```image_path``` as argument and returns below object in success.
 ```{
   "result": [
     {
@@ -41,13 +60,49 @@ The main purpose of Recognition Service is operating on images in your face coll
   ]
 }
  ``` 
+
   - ```faceCollection.verify(image_path, image_id)``` - to compare similarities of given image with image from your face collection. Accepts ```image_path```(path of image) and ```image_id``` from your face collection and returns similarity percentage of images.
+  ```
+  {
+    "result": [
+      {
+        "box": {
+          "probability": <probability>,
+          "x_max": <integer>,
+          "y_max": <integer>,
+          "x_min": <integer>,
+          "y_min": <integer>
+        },
+        "similarity": <similarity1>
+      },
+      ...
+    ]
+  }
+  ```
+
   - ```faceCollection.delete(image_id)``` - to remove image from face collection. Accepts ```image_id``` and returns object of removed image in success.
+  ```
+  {
+    "image_id": <image_id>,
+    "subject": <subject>
+  }
+  ```
+
   - ```faceCollection.delete_all_subject(subject)``` - to remove image(s) according to their given subject(name). Accepts ```subject``` and returns object(s) of removed image(s). NOTE: this function removes all images with same subject.
+  ```
+  [
+    {
+      "image_id": <image_id>,
+      "subject": <subject>
+    },
+    ...
+  ]
+  ```
+
   - ```faceCollection.delete_all()``` - to delete all images from face collection.
 
 ## Usage
-We have built our sdk around ```CompreFace``` class and below given steps for using Recognition Service functionalities.
+You only need to import ```CompreFace``` in order to use functionalities of services. Below given initial setup for your web application.
 ```
 import { CompreFace } from 'compreface-js-sdk';
 
@@ -58,4 +113,37 @@ let port = 8000;
 let compreFace = new CompreFace(server, port); // set server and port number
 let recognitionService = compreFace.initFaceRecognitionService(api_key); // initialize service
 let faceCollection = recognitionService.getFaceCollection();
+```
+
+Here is JavaScript code example that shows how to add image to your face collection. NOTE: we use initial setup variable names in following example:
+
+```
+function saveInFaceCollection(){
+    let path_to_image = "../images/boy.jpg";
+    let name = encodeURIComponent('Tom'); 
+
+    faceCollection.add(path_to_image, name)
+        .then(response => {
+          // your code
+        })
+        .catch(error => {
+            console.log(`Ups! There is problem in uploading image ${error}`)
+        })
+}
+
+```
+This code snippet shows how to use recognize function and write result to text area:
+
+```
+function recognizeFace(){
+  let path_to_image = "../images/team.jpg";
+
+  faceCollection.recognize(path_to_image)
+    .then(response => {
+      document.getElementById("result-textarea-request").innerHTML = JSON.stringify(response);
+    })
+    .catch(error => {
+      console.log(`Ups! There is problem with recognizing image ${error}`)
+    })
+}
 ```
