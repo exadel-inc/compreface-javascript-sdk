@@ -132,6 +132,34 @@ function saveInFaceCollection(){
 }
 
 ```
+Following example shows how to display list of images in face collection
+```
+function listFaceCollectionInfo(){
+  let table = document.getElementById("face_collection_table");
+  let tableBody = document.createElement('tbody');
+
+  faceCollection.list()
+    .then( response => {
+      const { faces } = response;
+
+      faces.forEach(faceObjects => {
+        let row = document.createElement('tr');
+
+          Object.keys(faceObject).forEach(element => {
+            let cell = document.createElement('td');
+            cell.appendChild(document.createTextNode(cellData));
+            row.appendChild(cell);
+          })
+          tableBody.appendChild(row);
+      })
+      table.appendChild(tableBody);
+    })
+    .catch(error => {
+      console.log(`Ups! There is problem retriving data ${error}`)
+    })
+
+}
+```
 This code snippet shows how to use recognize function and write result to text area:
 
 ```
