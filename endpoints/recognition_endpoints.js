@@ -65,12 +65,10 @@ const recognition_endpoints = {
     /**
      * Add image with subject
      * @param {String} image_path
-     * @param {String} subject 
      * @param {String} api_key
      * @returns {Promise}
      */
-    async add_request(image_path, subject, url, api_key){
-        url = `${url}?subject=${subject}`
+    async add_request(image_path, url, api_key){
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
 
@@ -88,13 +86,11 @@ const recognition_endpoints = {
     /**
      * Add image (from url) with subject
      * @param {String} image_url 
-     * @param {String} subject 
      * @param {String} url 
      * @param {String} api_key 
      * @returns {Promise}
      */
-    add_with_url_request(image_url, subject, url, api_key){
-        url = `${url}?subject=${subject}`
+    add_with_url_request(image_url, url, api_key){
         var bodyFormData = new FormData();
         
         return new Promise( async (resolve, reject) => {

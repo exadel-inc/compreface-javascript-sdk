@@ -16,9 +16,10 @@
 import { RecognitionService } from '../services/recognition_service.js';
 // main class
 class CompreFace {
-    constructor(server, port){
+    constructor(server, port, options){
         this.server = server;
         this.port = port;
+        this.options = options;
     }
     /**
      * Initialize RecognitionService instance
@@ -26,7 +27,7 @@ class CompreFace {
      * @returns {Object}
      */
     initFaceRecognitionService(api_key){
-        let recognition_object = new RecognitionService(this.server, this.port, api_key)
+        let recognition_object = new RecognitionService(this.server, this.port, this.options, api_key)
         return recognition_object;
     }
 }

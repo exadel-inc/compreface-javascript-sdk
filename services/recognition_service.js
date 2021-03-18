@@ -16,10 +16,11 @@
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
 
 class RecognitionService {
-    constructor(server, port, key){
+    constructor(server, port, options, key){
         this.server = server;
-        this.key = key;
         this.port = port;
+        this.options = options;
+        this.key = key;
     }
 
     /**
@@ -34,12 +35,40 @@ class RecognitionService {
     }
 
     /**
+     * Add extra options to url
+     * @param {Object} options 
+     * @returns {String}
+     */
+    add_options_to_url(url, localOptions, needLimitOption, needDetOption, needPredictionOption){
+        let uniqueOptions = {...this.options, ...localOptions};
+        let isThereAnyOptions = Object.keys(uniqueOptions);
+        console.log(uniqueOptions)
+        // check whether user passed options by main class
+        if(isThereAnyOptions.length > 0){
+            if(uniqueOptions['limit'] && needLimitOption){
+                url = `${url}?limit=${uniqueOptions['limit']}`
+            }
+
+            if(!isNaN(uniqueOptions['det_prob_threshold']) && needDetOption){
+                url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
+            }
+
+            if(uniqueOptions['prediction_count'] && needPredictionOption){
+                url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
+            }
+        }
+
+        return url;
+    }
+
+    /**
      * Contains functions related to face collection
      * @returns {Object}
      */
     getFaceCollection(){
         let url = this.get_full_url();
         let key = this.key;
+        let that = this;
 
         const faceCollectionFunctions = {
             /**
@@ -64,15 +93,17 @@ class RecognitionService {
              * @param {String} subject 
              * @returns {Promise} 
              */
-            add(image_path, subject){
+            add(image_path, subject, options){
                 let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
                 let isUrl = urlRegEX.test(image_path);
-                let det_prob_threshold = 0
-                url = `${url}&det_prob_threshold=${det_prob_threshold}`
                 
+                // add parameters to basic url
+                url = `${url}?subject=${subject}`
+                url = that.add_options_to_url(url, options, false, true, false);
+
                 return new Promise((resolve, reject) => {
                     if(isUrl){
-                        recognition_endpoints.add_with_url_request(image_path, subject, url, key)
+                        recognition_endpoints.add_with_url_request(image_path, url, key)
                             .then(response => {
                                 return resolve(response.data)
                             })
@@ -80,7 +111,7 @@ class RecognitionService {
                                 return reject(error.response.data)
                             })
                     }else {
-                        recognition_endpoints.add_request(image_path, subject, url, key)
+                        recognition_endpoints.add_request(image_path, url, key)
                             .then(response => {
                                 return resolve(response.data)
                             })
@@ -97,11 +128,10 @@ class RecognitionService {
              * @param {String} image_path 
              * @returns {Promise}
              */
-            recognize(image_path){
-                let det_prob_threshold = 0;
-                let limit = 0;
-                let prediction_count = 1;
-                url = `${url}/recognize?limit=${limit}&prediction_count=${prediction_count}&det_prob_threshold=${det_prob_threshold}`;
+            recognize(image_path, options){
+                // add parameters to basic url
+                url = `${url}/recognize`;
+                url = that.add_options_to_url(url, options, true, true, true);
 
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.recognize_face_request(image_path, url, key)
@@ -121,11 +151,11 @@ class RecognitionService {
              * @param {String} image_id 
              * @returns {Promise}
              */
-            verify(image_path, image_id){
-                let det_prob_threshold = 0;
-                let limit = 0;
-                url = `${url}/${image_id}/verify?limit=${limit}&det_prob_threshold=${det_prob_threshold}`;
-
+            verify(image_path, image_id, options){
+                // add parameters to basic url
+                url = `${url}/${image_id}/verify`;
+                url = that.add_options_to_url(url, options, true, true, false);
+                console.log(url)
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.verify_face_request(image_path, url, key)
                         .then(response => {
