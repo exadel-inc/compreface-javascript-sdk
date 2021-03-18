@@ -52,6 +52,8 @@ class RecognitionService {
             add(image_path, subject){
                 let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
                 let isUrl = urlRegEX.test(image_path);
+                let det_prob_threshold = 0
+                url = `${url}&det_prob_threshold=${det_prob_threshold}`
                 
                 return new Promise((resolve, reject) => {
                     if(isUrl){
@@ -81,7 +83,10 @@ class RecognitionService {
              * @returns {Promise}
              */
             recognize(image_path){
-                url = `${url}/recognize`;
+                let det_prob_threshold = 0;
+                let limit = 0;
+                let prediction_count = 1;
+                url = `${url}/recognize?limit=${limit}&prediction_count=${prediction_count}&det_prob_threshold=${det_prob_threshold}`;
 
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.recognize_face_request(image_path, url, key)
@@ -102,7 +107,9 @@ class RecognitionService {
              * @returns {Promise}
              */
             verify(image_path, image_id){
-                url = `${url}/${image_id}/verify`;
+                let det_prob_threshold = 0;
+                let limit = 0;
+                url = `${url}/${image_id}/verify?limit=${limit}&det_prob_threshold=${det_prob_threshold}`;
 
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.verify_face_request(image_path, url, key)
