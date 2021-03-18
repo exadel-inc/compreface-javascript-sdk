@@ -54,7 +54,7 @@ const recognition_endpoints = {
      * @param {String} api_key
      * @returns {Promise}
      */
-    async add_subject_request(image_path, subject, url, api_key){
+    async add_request(image_path, subject, url, api_key){
         url = `${url}?subject=${subject}`
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
@@ -68,6 +68,38 @@ const recognition_endpoints = {
         })
 
         return response;
+    },
+
+    /**
+     * Add image (from url) with subject
+     * @param {String} image_url 
+     * @param {String} subject 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+    add_with_url_request(image_url, subject, url, api_key){
+        url = `${url}?subject=${subject}`
+        var bodyFormData = new FormData();
+        
+        return new Promise( async (resolve, reject) => {
+            await axios.get(image_url, { responseType: 'stream' })
+            .then( async (response) => {
+                bodyFormData.append('file', response.data, 'exadel.png'); 
+        
+                const res = await axios.post( url, bodyFormData, {
+                    headers: {
+                        ...bodyFormData.getHeaders(),
+                        "x-api-key": api_key
+                    },
+                })
+        
+                return resolve(res)
+            })
+            .catch(error => {
+                return reject(error)
+            })
+        })
     },
 
     /**

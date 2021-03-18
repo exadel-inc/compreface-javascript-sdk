@@ -50,15 +50,29 @@ class RecognitionService {
              * @returns {Promise} 
              */
             add(image_path, subject){
+                let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+                let isUrl = urlRegEX.test(image_path);
+                
                 return new Promise((resolve, reject) => {
-                    recognition_endpoints.add_subject_request(image_path, subject, url, key)
-                        .then(response => {
-                            return resolve(response.data)
-                        })
-                        .catch(error => {
-                            return reject(error.response.data)
-                        })
-                })
+                    if(isUrl){
+                        recognition_endpoints.add_with_url_request(image_path, subject, url, key)
+                            .then(response => {
+                                return resolve(response.data)
+                            })
+                            .catch(error => {
+                                return reject(error.response.data)
+                            })
+                    }else {
+                        recognition_endpoints.add_request(image_path, subject, url, key)
+                            .then(response => {
+                                return resolve(response.data)
+                            })
+                            .catch(error => {
+                                return reject(error.response.data)
+                            })
+                    }
+                    
+                })            
             },
 
             /**
