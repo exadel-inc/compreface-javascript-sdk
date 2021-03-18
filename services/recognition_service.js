@@ -40,7 +40,7 @@ class RecognitionService {
      * @returns {String}
      */
     add_options_to_url(url, localOptions, needLimitOption, needDetOption, needPredictionOption){
-        let uniqueOptions = {...this.options, ...localOptions};
+        let uniqueOptions = {...localOptions, ...this.options};
         let isThereAnyOptions = Object.keys(uniqueOptions);
         console.log(uniqueOptions)
         // check whether user passed options by main class
@@ -155,7 +155,7 @@ class RecognitionService {
                 // add parameters to basic url
                 url = `${url}/${image_id}/verify`;
                 url = that.add_options_to_url(url, options, true, true, false);
-                console.log(url)
+               
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.verify_face_request(image_path, url, key)
                         .then(response => {
