@@ -45,7 +45,7 @@ class RecognitionService {
         console.log(uniqueOptions)
         // check whether user passed options by main class
         if(isThereAnyOptions.length > 0){
-            if(uniqueOptions['limit'] && needLimitOption){
+            if(!isNaN(uniqueOptions['limit']) && needLimitOption){
                 url = `${url}?limit=${uniqueOptions['limit']}`
             }
 
@@ -53,7 +53,7 @@ class RecognitionService {
                 url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
             }
 
-            if(uniqueOptions['prediction_count'] && needPredictionOption){
+            if(!isNaN(uniqueOptions['prediction_count']) && needPredictionOption){
                 url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
             }
         }
