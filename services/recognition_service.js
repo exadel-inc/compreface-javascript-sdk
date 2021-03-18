@@ -42,7 +42,7 @@ class RecognitionService {
     add_options_to_url(url, localOptions, needLimitOption, needDetOption, needPredictionOption){
         let uniqueOptions = {...localOptions, ...this.options};
         let isThereAnyOptions = Object.keys(uniqueOptions);
-        console.log(uniqueOptions)
+        
         // check whether user passed options by main class
         if(isThereAnyOptions.length > 0){
             if(!isNaN(uniqueOptions['limit']) && needLimitOption){
