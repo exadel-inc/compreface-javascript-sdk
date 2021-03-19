@@ -129,42 +129,12 @@ const recognition_endpoints = {
     },
 
     /**
-     * Delete image according to their id number
+     * Delete image(s)
      * @param {String} url 
      * @param {String} api_key 
      * @returns {Promise}
      */
     async delete_request(url, api_key){
-        const response = await axios.delete(url, { 
-            headers: {
-                "x-api-key": api_key
-            }})
-    
-        return response;
-    },
-
-    /**
-     * Delete image according to their subject name
-     * @param {String} url 
-     * @param {String} api_key 
-     * @returns {Promise}
-     */
-    async delete_all_subject_request(url, api_key){
-        const response = await axios.delete(url, { 
-            headers: {
-                "x-api-key": api_key
-            }})
-    
-        return response;
-    },
-
-    /**
-     * Delete all images
-     * @param {String} url 
-     * @param {String} api_key 
-     * @returns {Promise}
-     */
-    async delete_all_request(url, api_key){
         const response = await axios.delete(url, { 
             headers: {
                 "x-api-key": api_key

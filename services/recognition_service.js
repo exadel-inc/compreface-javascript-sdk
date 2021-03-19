@@ -195,7 +195,7 @@ class RecognitionService {
                 url = `${url}?subject=${subject}`;
 
                 return new Promise((resolve, reject) => {
-                    recognition_endpoints.delete_all_subject_request(url, key)
+                    recognition_endpoints.delete_request(url, key)
                         .then(response => {
                             return resolve(response.data);
                         })
@@ -211,7 +211,7 @@ class RecognitionService {
              */
             delete_all(){
                 return new Promise((resolve, reject) => {
-                    recognition_endpoints.delete_all_request(url, key)
+                    recognition_endpoints.delete_request(url, key)
                         .then(response => {
                             return resolve(response.data);
                         })
