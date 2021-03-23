@@ -28,16 +28,21 @@ const recognition_endpoints = {
     async recognize_face_request(image_path, url, api_key ){
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, bodyFormData, {
+                    headers: {
+                        ...bodyFormData.getHeaders(),
+                        "Content-Length": bodyFormData.getLengthSync(),
+                        "x-api-key": api_key
+                    },
+                })
 
-        const response = await axios.post( url, bodyFormData, {
-            headers: {
-                ...bodyFormData.getHeaders(),
-                "Content-Length": bodyFormData.getLengthSync(),
-                "x-api-key": api_key
-            },
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
         })
-
-        return response;
     },
 
     /**
@@ -50,16 +55,23 @@ const recognition_endpoints = {
      async verify_face_request(image_path, url, api_key ){
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
+        
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, bodyFormData, {
+                    headers: {
+                        ...bodyFormData.getHeaders(),
+                        "Content-Length": bodyFormData.getLengthSync(),
+                        "x-api-key": api_key
+                    },
+                })
 
-        const response = await axios.post( url, bodyFormData, {
-            headers: {
-                ...bodyFormData.getHeaders(),
-                "Content-Length": bodyFormData.getLengthSync(),
-                "x-api-key": api_key
-            },
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+            
         })
-
-        return response;
     },
 
     /**
@@ -72,15 +84,21 @@ const recognition_endpoints = {
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
         
-        const response = await axios.post( url, bodyFormData, {
-            headers: {
-                ...bodyFormData.getHeaders(),
-                "Content-Length": bodyFormData.getLengthSync(),
-                "x-api-key": api_key
-            },
-        })
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, bodyFormData, {
+                    headers: {
+                        ...bodyFormData.getHeaders(),
+                        "Content-Length": bodyFormData.getLengthSync(),
+                        "x-api-key": api_key
+                    },
+                })
 
-        return response;
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
     },
 
     /**
@@ -112,7 +130,7 @@ const recognition_endpoints = {
                 }
             })
             .catch(error => {
-                return reject(error)
+                reject(error)
             })
         })
     },
@@ -124,12 +142,19 @@ const recognition_endpoints = {
      * @returns {Promise}
      */
     async list_request(url, api_key){
-        const response = await axios.get(url, { 
-        headers: {
-            "x-api-key": api_key
-        }})
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.get(url, { 
+                    headers: {
+                        "x-api-key": api_key 
+                    }
+                })
 
-        return response;
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
     },
 
     /**
@@ -139,12 +164,19 @@ const recognition_endpoints = {
      * @returns {Promise}
      */
     async delete_request(url, api_key){
-        const response = await axios.delete(url, { 
-            headers: {
-                "x-api-key": api_key
-            }})
-    
-        return response;
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.delete(url, { 
+                    headers: {
+                        "x-api-key": api_key
+                    }
+                }) 
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
 } 
 

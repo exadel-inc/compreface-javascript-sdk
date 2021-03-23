@@ -15,17 +15,4 @@
  */
 import { CompreFace } from './core/compre_face.js';
 
-let server = "http://localhost";
-let port = 8000;
-let image_url = "https://www.youtube.com/watch?v=Bs65qyxglHg";
-let key = "00000000-0000-0000-0000-000000000002";
-let image_id = '0ef8edcf-42fa-42ff-b6f0-6c15bd27782d';
-let options = { limit: 0, det_prob_threshold: 0, prediction_count: 1 }
-
-let core = new CompreFace(server, port, options);
-let recognition_service = core.initFaceRecognitionService(key);
-let faceCollection = recognition_service.getFaceCollection();
-
-faceCollection.add(image_url, "Vimeo")
-    .then(response => console.log(response))
-    .catch(error => console.log(error))
+export { CompreFace }
