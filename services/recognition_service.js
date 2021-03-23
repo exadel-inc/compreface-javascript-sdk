@@ -39,21 +39,25 @@ class RecognitionService {
      * @param {Object} options 
      * @returns {String}
      */
-    add_options_to_url(url, localOptions, needLimitOption, needDetOption, needPredictionOption){
+    add_options_to_url(url, localOptions, required_parameters){
+        // merge options passed by localy and globally NOTE: global options will override local on if same value passed from both of them
         let uniqueOptions = {...localOptions, ...this.options};
         let isThereAnyOptions = Object.keys(uniqueOptions);
         
-        // check whether user passed options by main class
+        // check whether any parameters passed
         if(isThereAnyOptions.length > 0){
-            if(!isNaN(uniqueOptions['limit']) && needLimitOption){
+            // check whether limit parameter passed and it is required for particular endpoint (ex: it is not requrid for add())
+            if(uniqueOptions['limit'] >= 0 && required_parameters['limit']){
                 url = `${url}?limit=${uniqueOptions['limit']}`
             }
 
-            if(!isNaN(uniqueOptions['det_prob_threshold']) && needDetOption){
+            // check whether det_prob_threshold parameter passed and is it required for particular endpoint
+            if(uniqueOptions['det_prob_threshold'] >= 0 && required_parameters['det_prob_threshold']){
                 url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
             }
 
-            if(!isNaN(uniqueOptions['prediction_count']) && needPredictionOption){
+            // check whether prediction_count passed and is it required for particular endpoint
+            if(uniqueOptions['prediction_count'] >= 0 && required_parameters['prediction_count']){
                 url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
             }
         }
@@ -94,12 +98,15 @@ class RecognitionService {
              * @returns {Promise} 
              */
             add(image_path, subject, options){
+                // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
+                // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
+                let required_url_parameters = { det_prob_threshold: true };
                 let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
                 let isUrl = urlRegEX.test(image_path);
                 
                 // add parameters to basic url
                 url = `${url}?subject=${subject}`
-                url = that.add_options_to_url(url, options, false, true, false);
+                url = that.add_options_to_url(url, options, required_url_parameters);
 
                 return new Promise((resolve, reject) => {
                     if(isUrl){
@@ -129,9 +136,12 @@ class RecognitionService {
              * @returns {Promise}
              */
             recognize(image_path, options){
+                // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
+                // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
+                let required_url_parameters = {limit: true, det_prob_threshold: true, prediction_count: true };
                 // add parameters to basic url
                 url = `${url}/recognize`;
-                url = that.add_options_to_url(url, options, true, true, true);
+                url = that.add_options_to_url(url, options, required_url_parameters);
 
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.recognize_face_request(image_path, url, key)
@@ -152,9 +162,12 @@ class RecognitionService {
              * @returns {Promise}
              */
             verify(image_path, image_id, options){
+                // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
+                // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
+                let required_url_parameters = { det_prob_threshold: true, prediction_count: true };
                 // add parameters to basic url
                 url = `${url}/${image_id}/verify`;
-                url = that.add_options_to_url(url, options, true, true, false);
+                url = that.add_options_to_url(url, options, required_url_parameters);
                
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.verify_face_request(image_path, url, key)

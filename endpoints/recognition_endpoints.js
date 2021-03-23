@@ -71,7 +71,7 @@ const recognition_endpoints = {
     async add_request(image_path, url, api_key){
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
-
+        
         const response = await axios.post( url, bodyFormData, {
             headers: {
                 ...bodyFormData.getHeaders(),
@@ -96,16 +96,20 @@ const recognition_endpoints = {
         return new Promise( async (resolve, reject) => {
             await axios.get(image_url, { responseType: 'stream' })
             .then( async (response) => {
-                bodyFormData.append('file', response.data, 'exadel.png'); 
-        
-                const res = await axios.post( url, bodyFormData, {
-                    headers: {
-                        ...bodyFormData.getHeaders(),
-                        "x-api-key": api_key
-                    },
-                })
-        
-                return resolve(res)
+                let image_extention = response.headers['content-type'].split("/")[1]
+                bodyFormData.append('file', response.data, `example.${image_extention}`);   
+                try {
+                    const res = await axios.post( url, bodyFormData, {
+                        headers: {
+                            ...bodyFormData.getHeaders(),
+                            "x-api-key": api_key
+                        },
+                    })
+
+                    resolve(res)
+                } catch (error) {
+                    reject(error)
+                }
             })
             .catch(error => {
                 return reject(error)
