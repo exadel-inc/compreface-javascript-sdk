@@ -17,7 +17,16 @@ npm install compreface-js-sdk
 ## Recognition Service
 The main purpose of Recognition Service is operating on images in your face collection. Face collection is an array of objects that every object contains ```image_id``` and ```subject``` to represent added image. Below given useful information about functionaliites of Recognition Service.
 
-  - ```faceCollection.add(image_path, subject)``` - to add an image to your face collection. This function takes ```image_path```(path of image) and ```subject```(name) as argument and returns object that contains ```image_id``` and ```subject``` in success  
+  - ```faceCollection.add(image_path, subject, options)``` - to add an image to your face collection. This function takes ```image_path```(path of image),  ```subject```(name of image) and options as argument and returns object that contains ```image_id``` and ```subject``` in success. Options argument is an object that contains extra parameters for particular function. Those extra parameters could be ```options = { limit, det_prob_threshold, prediction_count }```
+ 
+
+|           |  |     |  |                                                         |
+| ---------------- | ----------- | ------- | -------- | ------------------------------------------------------------ |
+| limit            | integer | optional | maximum number of faces with best similarity in result. Value of 0 represents no limit. Default value: 0 |
+| det_prob_ threshold | string | optional | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0. |
+| prediction_count | integer | optional | maximum number of predictions per faces. Default value: 1    |
+
+
   ```
   {
     "image_id": "<UUID>",
@@ -38,7 +47,7 @@ The main purpose of Recognition Service is operating on images in your face coll
   }
   ```
 
-  - ```faceCollection.recognize(image_path)``` - to recognize faces from given image. The function takes ```image_path``` as argument and returns below object in success.
+  - ```faceCollection.recognize(image_path, options)``` - to recognize faces from given image. The function takes ```image_path``` and ```options``` as argument and returns below object in success.
 ```{
   "result": [
     {
@@ -61,7 +70,7 @@ The main purpose of Recognition Service is operating on images in your face coll
 }
  ``` 
 
-  - ```faceCollection.verify(image_path, image_id)``` - to compare similarities of given image with image from your face collection. Accepts ```image_path```(path of image) and ```image_id``` from your face collection and returns similarity percentage of images.
+  - ```faceCollection.verify(image_path, image_id, options)``` - to compare similarities of given image with image from your face collection. Accepts ```image_path```(path of image), ```image_id``` from your face collection, ```options``` and returns similarity percentage of images.
   ```
   {
     "result": [
@@ -102,15 +111,20 @@ The main purpose of Recognition Service is operating on images in your face coll
   - ```faceCollection.delete_all()``` - to delete all images from face collection.
 
 ## Usage
-You only need to import ```CompreFace``` in order to use functionalities of services. Below given initial setup for your web application.
+You only need to import ```CompreFace``` in order to use functionalities of services. Below given initial setup for your web application. NOTE: you can pass options globally too. In this case if you provide same option values from functions, global ones override local one.
 ```
 import { CompreFace } from 'compreface-js-sdk';
 
 let api_key = "your_key";
 let server = "http://localhost";
 let port = 8000;
+let options = {
+  limit: 0, 
+  det_prob_threshold: 0.5, 
+  prediction_count: 1
+}
 
-let compreFace = new CompreFace(server, port); // set server and port number
+let compreFace = new CompreFace(server, port, options); // set server, port number and options
 let recognitionService = compreFace.initFaceRecognitionService(api_key); // initialize service
 let faceCollection = recognitionService.getFaceCollection();
 ```
