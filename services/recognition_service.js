@@ -66,6 +66,31 @@ class RecognitionService {
     }
 
     /**
+     * Recognize face(s) from given image
+     * @param {String} image_path 
+     * @returns {Promise}
+     */
+    recognize(image_path, options){
+        // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
+        // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
+        let required_url_parameters = {limit: true, det_prob_threshold: true, prediction_count: true };
+        // add parameters to basic url
+        let url = this.get_full_url();
+        url = `${url}/recognize`;
+        url = this.add_options_to_url(url, options, required_url_parameters);
+
+        return new Promise((resolve, reject) => {
+            recognition_endpoints.recognize_face_request(image_path, url, this.key)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(error => {
+                    reject(error.response.data)
+                })
+        })
+    }
+
+    /**
      * Contains functions related to face collection
      * @returns {Object}
      */
@@ -83,10 +108,10 @@ class RecognitionService {
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.list_request(url, key)
                         .then(response => {
-                            return resolve(response.data)
+                            resolve(response.data)
                         })
                         .catch(error => {
-                            return reject(error.response.data)
+                            reject(error.response.data)
                         })
                 })
             },
@@ -112,47 +137,22 @@ class RecognitionService {
                     if(isUrl){
                         recognition_endpoints.add_with_url_request(image_path, url, key)
                             .then(response => {
-                                return resolve(response.data)
+                                resolve(response.data)
                             })
                             .catch(error => {
-                                return reject(error.response.data)
+                                reject(error.response.data)
                             })
                     }else {
                         recognition_endpoints.add_request(image_path, url, key)
                             .then(response => {
-                                return resolve(response.data)
+                                resolve(response.data)
                             })
                             .catch(error => {
-                                return reject(error.response.data)
+                                reject(error.response.data)
                             })
                     }
                     
                 })            
-            },
-
-            /**
-             * Recognize face(s) from given image
-             * @param {String} image_path 
-             * @returns {Promise}
-             */
-            recognize(image_path, options){
-                // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
-                // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
-                let required_url_parameters = {limit: true, det_prob_threshold: true, prediction_count: true };
-                // add parameters to basic url
-                url = `${url}/recognize`;
-                url = that.add_options_to_url(url, options, required_url_parameters);
-
-                return new Promise((resolve, reject) => {
-                    recognition_endpoints.recognize_face_request(image_path, url, key)
-                        .then(response => {
-                            return resolve(response.data)
-                        })
-                        .catch(error => {
-                            return reject(error.response.data)
-                        })
-                })
-        
             },
 
             /**
@@ -172,10 +172,10 @@ class RecognitionService {
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.verify_face_request(image_path, url, key)
                         .then(response => {
-                            return resolve(response.data)
+                            resolve(response.data)
                         })
                         .catch(error => {
-                            return reject(error.response.data)
+                            reject(error.response.data)
                         })
                 })
             },
@@ -191,10 +191,10 @@ class RecognitionService {
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.delete_request(url, key,)
                         .then(response => {
-                            return resolve(response.data);
+                            resolve(response.data);
                         })
                         .catch(error => {
-                            return reject(error.response.data);
+                            reject(error.response.data);
                         })
                 })
             },
@@ -210,10 +210,10 @@ class RecognitionService {
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.delete_request(url, key)
                         .then(response => {
-                            return resolve(response.data);
+                            resolve(response.data);
                         })
                         .catch(error => {
-                            return reject(error.response.data);
+                            reject(error.response.data);
                         })
                 })
             },
@@ -226,10 +226,10 @@ class RecognitionService {
                 return new Promise((resolve, reject) => {
                     recognition_endpoints.delete_request(url, key)
                         .then(response => {
-                            return resolve(response.data);
+                            resolve(response.data);
                         })
                         .catch(error => {
-                            return reject(error.response.data);
+                            reject(error.response.data);
                         })
                 })
             }
