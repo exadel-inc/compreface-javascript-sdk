@@ -24,11 +24,11 @@ CompreFace JavaScript SDK makes face recognition into your application even easi
 ## Requirements
 
 Before using our SDK make sure you have installed CompreFace and Nodejs on your machine.
-1. [CompreFace](https://github.com/exadel-inc/CompreFace#getting-started-with-compreface)
+1. [CompreFace](https://github.com/exadel-inc/CompreFace#getting-started-with-compreface)(Version 0.4.1)
 2. [Nodejs](https://nodejs.org/en/)(Version 10+)
 
 ## Installation
-To add CompreFace JS SDK to your project, run following command in the project folder:
+To add CompreFace JS SDK to your project, run the following command in the project folder:
 
 ```npm i @exadel/compreface-js-sdk```
 
