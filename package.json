@@ -1,5 +1,5 @@
 {
-  "name": "compreface-js-sdk",
+  "name": "@exadel/compreface-js-sdk",
   "version": "0.4.1",
   "license": "Apache-2.0",
   "description": "JavaScript SDK for CompreFace - free and open-source face recognition system from Exadel",
