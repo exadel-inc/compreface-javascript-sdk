@@ -30,7 +30,7 @@ Before using our SDK make sure you have installed CompreFace and Nodejs on your 
 ## Installation
 To add CompreFace JS SDK to your project, run following command in the project folder:
 
-```npm install compreface-js-sdk```
+```npm i @exadel/compreface-js-sdk```
 
 
 ## Usage
