@@ -19,11 +19,20 @@
     "Computer Vision",
     "SDK"
   ],
-  "author": "Exadel INC",
+  "contributors": [
+    {
+      "name": "Dostonbek Oripjonov",
+      "email": "doripjonov@exadel.com"
+    },
+    {
+      "name": "Serhii Pospielov",
+      "email": "spospielov@exadel.com"
+    }
+  ],
   "bugs": {
     "url": "https://github.com/exadel-inc/compreface-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/exadel-inc/compreface-javascript-sdk#readme",
+  "homepage": "https://exadel.com/solutions/compreface/",
   "dependencies": {
     "axios": "^0.21.1",
     "form-data": "^4.0.0"
