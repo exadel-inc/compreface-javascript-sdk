@@ -14,5 +14,28 @@
  * permissions and limitations under the License.
  */
 import { CompreFace } from './core/compre_face.js';
+let server = "http://localhost";
+let port = 8000;
+let image_url = "https://media.gettyimages.com/photos/woman-standing-on-city-street-looking-at-camera-picture-id1292452761?s=2048x2048";
+let key = "00000000-0000-0000-0000-000000000002";
+let image_id = '0ef8edcf-42fa-42ff-b6f0-6c15bd27782d';
 
-export { CompreFace }
+let core = new CompreFace(server, port);
+let recognition_service = core.initFaceRecognitionService(key);
+let faceCollection = recognition_service.getFaceCollection();
+
+recognition_service.recognize('../img/girl.png')
+    .then(res => console.log(JSON.stringify(res)))
+    .catch(error => console.log(error))
+
+// faceCollection.list()
+//     .then(res => console.log(res))
+//     .catch(error => console.log(error))
+
+// faceCollection.add("../img/girl.png", "Cute girl")
+//     .then(res => console.log(res))
+//     .catch(error => console.log(error))
+
+// faceCollection.delete_all_subject("Cute girl")
+//     .then(res => console.log(res))
+//     .catch(error => console.log(error))

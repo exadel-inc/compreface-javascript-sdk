@@ -27,8 +27,8 @@ class RecognitionService {
      * Construct full url from given server and port number
      * @returns {String}
      */
-    get_full_url(){
-        let destination = 'api/v1/faces';
+    get_full_url(isUrlForRecognition){
+        let destination = isUrlForRecognition ? 'api/v1/recognition' : 'api/v1/recognition/faces';
         let full_url = `${this.server}:${this.port}/${destination}`;
 
         return full_url;
@@ -75,7 +75,7 @@ class RecognitionService {
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = {limit: true, det_prob_threshold: true, prediction_count: true };
         // add parameters to basic url
-        let url = this.get_full_url();
+        let url = this.get_full_url(true);
         url = `${url}/recognize`;
         url = this.add_options_to_url(url, options, required_url_parameters);
 
