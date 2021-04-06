@@ -60,6 +60,16 @@ class RecognitionService {
             if(uniqueOptions['prediction_count'] >= 0 && required_parameters['prediction_count']){
                 url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
             }
+
+            // check whether face_plugins passed and is it required for particular endpoint
+            if(uniqueOptions['face_plugins'] && required_parameters['face_plugins']){
+                url = `${url}&face_plugins=${uniqueOptions['face_plugins']}`
+            }
+
+            // check whether status passed and is it required for particular endpoint
+            if(uniqueOptions['status'] && required_parameters['status']){
+                url = `${url}&status=${uniqueOptions['status']}`
+            }
         }
 
         return url;
@@ -73,7 +83,14 @@ class RecognitionService {
     recognize(image_path, options){
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
-        let required_url_parameters = {limit: true, det_prob_threshold: true, prediction_count: true };
+        let required_url_parameters = {
+            limit: true, 
+            det_prob_threshold: true, 
+            prediction_count: true,
+            face_plugins: true,
+            status: true
+        };
+
         // add parameters to basic url
         let url = this.get_full_url(true);
         url = `${url}/recognize`;
@@ -126,6 +143,8 @@ class RecognitionService {
                 // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
                 // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
                 let required_url_parameters = { det_prob_threshold: true };
+
+                // regex to check passed parameter is url or relative path
                 let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
                 let isUrl = urlRegEX.test(image_path);
                 
@@ -164,7 +183,13 @@ class RecognitionService {
             verify(image_path, image_id, options){
                 // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
                 // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
-                let required_url_parameters = { det_prob_threshold: true, prediction_count: true };
+                let required_url_parameters = { 
+                    limit: true,
+                    det_prob_threshold: true, 
+                    prediction_count: true,
+                    face_plugins: true,
+                    status: true
+                };
                 // add parameters to basic url
                 url = `${url}/${image_id}/verify`;
                 url = that.add_options_to_url(url, options, required_url_parameters);
