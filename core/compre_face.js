@@ -15,6 +15,7 @@
  */
 import { RecognitionService } from '../services/recognition_service.js';
 import { VerificationService } from '../services/verification_service.js';
+import { DetectionService } from '../services/detection_service.js';
 // main class
 class CompreFace {
     constructor(server, port, options){
@@ -37,9 +38,19 @@ class CompreFace {
      * @param {String} api_key 
      * @returns {Object}
      */
-     initFaceVerificationService(api_key){
+    initFaceVerificationService(api_key){
         let verification_object = new VerificationService(this.server, this.port, this.options, api_key)
         return verification_object;
+    }
+
+    /**
+     * Initialize DetectionService instance
+     * @param {String} api_key 
+     * @returns {Object}
+     */
+     initFaceDetectionService(api_key){
+        let detection_object = new DetectionService(this.server, this.port, this.options, api_key)
+        return detection_object;
     }
 }
 
