@@ -15,6 +15,7 @@
  */
 
 import { detection_endpoints } from '../endpoints/detection_endpoints.js';
+import { common_functions } from '../functions/index.js';
 
 class DetectionService {
     constructor(server, port, options, key){
@@ -22,60 +23,17 @@ class DetectionService {
         this.port = port;
         this.options = options;
         this.key = key;
+        this.base_url = 'api/v1/detection/detect';
     }
 
     /**
-     * Construct full url from given server and port number
-     * @returns {String}
-     */
-    get_full_url(){
-        let destination = 'api/v1/detection/detect';
-        let full_url = `${this.server}:${this.port}/${destination}`;
-
-        return full_url;
-    }
-    /**
-     * Add extra options to url
+     * Detect faces from given image
+     * @param {String} image_path 
      * @param {Object} options 
-     * @returns {String}
+     * @returns 
      */
-    add_options_to_url(url, localOptions, required_parameters){
-        // merge options passed by localy and globally NOTE: global options will override local on if same value passed from both of them
-        let uniqueOptions = {...localOptions, ...this.options};
-        let isThereAnyOptions = Object.keys(uniqueOptions);
-        
-        // check whether any parameters passed
-        if(isThereAnyOptions.length > 0){
-            // check whether limit parameter passed and it is required for particular endpoint (ex: it is not requrid for add())
-            if(uniqueOptions['limit'] >= 0 && required_parameters['limit']){
-                url = `${url}?limit=${uniqueOptions['limit']}`
-            }
-
-            // check whether det_prob_threshold parameter passed and is it required for particular endpoint
-            if(uniqueOptions['det_prob_threshold'] >= 0 && required_parameters['det_prob_threshold']){
-                url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
-            }
-
-            // check whether prediction_count passed and is it required for particular endpoint
-            if(uniqueOptions['prediction_count'] >= 0 && required_parameters['prediction_count']){
-                url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
-            }
-
-            // check whether face_plugins passed and is it required for particular endpoint
-            if(uniqueOptions['face_plugins'] && required_parameters['face_plugins']){
-                url = `${url}&face_plugins=${uniqueOptions['face_plugins']}`
-            }
-
-            // check whether status passed and is it required for particular endpoint
-            if(uniqueOptions['status'] && required_parameters['status']){
-                url = `${url}&status=${uniqueOptions['status']}`
-            }
-        }
-
-        return url;
-    }
-
-    detect(image_path, options){
+    detect(image_path, localOptions){
+        const { get_full_url, add_options_to_url } = common_functions;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = { 
@@ -85,8 +43,9 @@ class DetectionService {
             face_plugins: true,
             status: true
         };
+        let full_url = get_full_url(this.base_url, this.server, this.port)
         // add parameters to basic url
-        let url = this.add_options_to_url(this.get_full_url(), options, required_url_parameters);
+        let url = add_options_to_url(full_url, this.options, localOptions, required_url_parameters);
        
         return new Promise((resolve, reject) => {
             detection_endpoints.detect_request(image_path, url, this.key)
