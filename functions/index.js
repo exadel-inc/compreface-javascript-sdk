@@ -24,6 +24,19 @@ const common_functions = {
         return `${server}:${port}/${base_url}`;
     },
 
+    /**
+     * Check url
+     * @param {String} image_url 
+     * @returns {Boolean}
+     */
+    isUrl(image_url){
+        // regex to check passed parameter is url or relative path
+        let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+        let isUrl = urlRegEX.test(image_url);
+
+        return isUrl;
+    },
+
      /**
      * Add extra options to url
      * @param {String} url
@@ -39,27 +52,27 @@ const common_functions = {
         
         // check whether any parameters passed
         if(isThereAnyOptions.length > 0){
-            // check whether limit parameter passed and it is required for particular endpoint (ex: it is not requrid for add())
+            // check whether limit parameter passed and it is allowed for particular endpoint (ex: it is not requrid for add())
             if(uniqueOptions['limit'] >= 0 && required_parameters['limit']){
                 url = `${url}?limit=${uniqueOptions['limit']}`
             }
 
-            // check whether det_prob_threshold parameter passed and is it required for particular endpoint
+            // check whether det_prob_threshold parameter passed and is it allowed for particular endpoint
             if(uniqueOptions['det_prob_threshold'] >= 0 && required_parameters['det_prob_threshold']){
                 url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
             }
 
-            // check whether prediction_count passed and is it required for particular endpoint
+            // check whether prediction_count passed and is it allowed for particular endpoint
             if(uniqueOptions['prediction_count'] >= 0 && required_parameters['prediction_count']){
                 url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
             }
 
-            // check whether face_plugins passed and is it required for particular endpoint
+            // check whether face_plugins passed and is it allowed for particular endpoint
             if(uniqueOptions['face_plugins'] && required_parameters['face_plugins']){
                 url = `${url}&face_plugins=${uniqueOptions['face_plugins']}`
             }
 
-            // check whether status passed and is it required for particular endpoint
+            // check whether status passed and is it allowed for particular endpoint
             if(uniqueOptions['status'] && required_parameters['status']){
                 url = `${url}&status=${uniqueOptions['status']}`
             }

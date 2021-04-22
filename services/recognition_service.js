@@ -32,7 +32,7 @@ class RecognitionService {
      * @returns {Promise}
      */
     recognize(image_path, options){
-        const{ get_full_url, add_options_to_url } = common_functions;
+        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = {
@@ -47,15 +47,29 @@ class RecognitionService {
         let full_url = get_full_url(this.recognize_base_url, this.server, this.port)
         let url = add_options_to_url(full_url, this.options, options, required_url_parameters);
 
+        // regex to check passed parameter is url or relative path
+        let validUrl = isUrl(image_path)
+
         return new Promise((resolve, reject) => {
-            recognition_endpoints.recognize_face_request(image_path, url, this.key)
-                .then(response => {
-                    resolve(response.data)
-                })
-                .catch(error => {
-                    reject(error.response.data)
-                })
-        })
+            if(validUrl){
+                recognition_endpoints.image_url_request(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }else {
+                recognition_endpoints.face_request(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }
+            
+        })  
     }
 
     /**
@@ -63,7 +77,7 @@ class RecognitionService {
      * @returns {Object}
      */
     getFaceCollection(){
-        const{ get_full_url, add_options_to_url } = common_functions;
+        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
         let url = get_full_url(this.base_url, this.server, this.port)
         let key = this.key;
         let that = this;
@@ -80,7 +94,7 @@ class RecognitionService {
                             resolve(response.data)
                         })
                         .catch(error => {
-                            reject(error.response.data)
+                            reject(error)
                         })
                 })
             },
@@ -97,29 +111,28 @@ class RecognitionService {
                 let required_url_parameters = { det_prob_threshold: true };
 
                 // regex to check passed parameter is url or relative path
-                let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-                let isUrl = urlRegEX.test(image_path);
+                let validUrl = isUrl(image_path)
                 
                 // add parameters to basic url
                 url = `${url}?subject=${subject}`
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
 
                 return new Promise((resolve, reject) => {
-                    if(isUrl){
-                        recognition_endpoints.add_with_url_request(image_path, url, key)
+                    if(validUrl){
+                        recognition_endpoints.image_url_request(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
                             .catch(error => {
-                                reject(error.response.data)
+                                reject(error)
                             })
                     }else {
-                        recognition_endpoints.add_request(image_path, url, key)
+                        recognition_endpoints.face_request(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
                             .catch(error => {
-                                reject(error.response.data)
+                                reject(error)
                             })
                     }
                     
@@ -138,23 +151,36 @@ class RecognitionService {
                 let required_url_parameters = { 
                     limit: true,
                     det_prob_threshold: true, 
-                    prediction_count: true,
                     face_plugins: true,
                     status: true
                 };
                 // add parameters to basic url
                 url = `${url}/${image_id}/verify`;
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
+
+                // regex to check passed parameter is url or relative path
+                let validUrl = isUrl(image_path)
                
                 return new Promise((resolve, reject) => {
-                    recognition_endpoints.verify_face_request(image_path, url, key)
-                        .then(response => {
-                            resolve(response.data)
-                        })
-                        .catch(error => {
-                            reject(error.response.data)
-                        })
-                })
+                    if(validUrl){
+                        recognition_endpoints.image_url_request(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                    }else {
+                        recognition_endpoints.face_request(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                    }
+                    
+                })   
             },
 
             /**
@@ -171,7 +197,7 @@ class RecognitionService {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            reject(error.response.data);
+                            reject(error);
                         })
                 })
             },
@@ -190,7 +216,7 @@ class RecognitionService {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            reject(error.response.data);
+                            reject(error);
                         })
                 })
             },
@@ -206,7 +232,7 @@ class RecognitionService {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            reject(error.response.data);
+                            reject(error);
                         })
                 })
             }
