@@ -19,5 +19,5 @@ jobs:
         with:
           path-to-signatures: 'signatures/cla.json'
           path-to-cla-document: 'https://github.com/exadel-inc/compreface-javascript-sdk/blob/develop/CLA.md'
-          branch: 'main'
+          branch: 'CLA-signatures'
           allowlist: bot*
