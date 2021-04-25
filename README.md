@@ -31,7 +31,7 @@ Before using our SDK make sure you have installed CompreFace and Nodejs on your 
 1. [CompreFace](https://github.com/exadel-inc/CompreFace#getting-started-with-compreface) (See below compatibility matrix)
 2. [Nodejs](https://nodejs.org/en/) (Version 10+)
 
-** CompreFace compatibility matrix **
+### CompreFace compatibility matrix
 
 | CompreFace JS SDK version | CompreFace 0.4.x | CompreFace 0.5.x |
 | --------------------------| ---------------- | ---------------- | 
