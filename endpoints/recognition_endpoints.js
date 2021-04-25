@@ -19,71 +19,16 @@ import FormData from 'form-data';
 
 const recognition_endpoints = {
     /**
-     * Recognize face(s) from given image
+     * Universal function to make request for add, recognize and verify face from face collection
      * @param {String} image_path 
      * @param {String} url 
      * @param {String} api_key 
      * @returns {Promise}
      */
-    async recognize_face_request(image_path, url, api_key ){
+    async face_request(image_path, url, api_key ){
         var bodyFormData = new FormData();
         bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
-        return new Promise( async (resolve, reject) => {
-            try {
-                const response = await axios.post( url, bodyFormData, {
-                    headers: {
-                        ...bodyFormData.getHeaders(),
-                        "Content-Length": bodyFormData.getLengthSync(),
-                        "x-api-key": api_key
-                    },
-                })
 
-                resolve(response)
-            } catch (error) {
-                reject(error)
-            }
-        })
-    },
-
-    /**
-     * Verify face(s) from given image
-     * @param {String} image_path 
-     * @param {String} url 
-     * @param {String} api_key 
-     * @returns {Promise}
-     */
-     async verify_face_request(image_path, url, api_key ){
-        var bodyFormData = new FormData();
-        bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
-        
-        return new Promise( async (resolve, reject) => {
-            try {
-                const response = await axios.post( url, bodyFormData, {
-                    headers: {
-                        ...bodyFormData.getHeaders(),
-                        "Content-Length": bodyFormData.getLengthSync(),
-                        "x-api-key": api_key
-                    },
-                })
-
-                resolve(response)
-            } catch (error) {
-                reject(error)
-            }
-            
-        })
-    },
-
-    /**
-     * Add image with subject
-     * @param {String} image_path
-     * @param {String} api_key
-     * @returns {Promise}
-     */
-    async add_request(image_path, url, api_key){
-        var bodyFormData = new FormData();
-        bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
-        
         return new Promise( async (resolve, reject) => {
             try {
                 const response = await axios.post( url, bodyFormData, {
@@ -108,30 +53,30 @@ const recognition_endpoints = {
      * @param {String} api_key 
      * @returns {Promise}
      */
-    add_with_url_request(image_url, url, api_key){
+    image_url_request(image_url, url, api_key){
         var bodyFormData = new FormData();
         
         return new Promise( async (resolve, reject) => {
             await axios.get(image_url, { responseType: 'stream' })
-            .then( async (response) => {
-                let image_extention = response.headers['content-type'].split("/")[1]
-                bodyFormData.append('file', response.data, `example.${image_extention}`);   
-                try {
-                    const res = await axios.post( url, bodyFormData, {
-                        headers: {
-                            ...bodyFormData.getHeaders(),
-                            "x-api-key": api_key
-                        },
-                    })
+                .then( async (response) => {
+                    let image_extention = response.headers['content-type'].split("/")[1]
+                    bodyFormData.append('file', response.data, `example.${image_extention}`);   
+                    try {
+                        const res = await axios.post( url, bodyFormData, {
+                            headers: {
+                                ...bodyFormData.getHeaders(),
+                                "x-api-key": api_key
+                            },
+                        })
 
-                    resolve(res)
-                } catch (error) {
+                        resolve(res)
+                    } catch (error) {
+                        reject(error)
+                    }
+                })
+                .catch(error => {
                     reject(error)
-                }
-            })
-            .catch(error => {
-                reject(error)
-            })
+                })
         })
     },
 

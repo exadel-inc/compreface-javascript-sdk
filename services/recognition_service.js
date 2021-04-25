@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
+import { common_functions } from '../functions/index.js';
 
 class RecognitionService {
     constructor(server, port, options, key){
@@ -21,48 +22,8 @@ class RecognitionService {
         this.port = port;
         this.options = options;
         this.key = key;
-    }
-
-    /**
-     * Construct full url from given server and port number
-     * @returns {String}
-     */
-    get_full_url(){
-        let destination = 'api/v1/faces';
-        let full_url = `${this.server}:${this.port}/${destination}`;
-
-        return full_url;
-    }
-
-    /**
-     * Add extra options to url
-     * @param {Object} options 
-     * @returns {String}
-     */
-    add_options_to_url(url, localOptions, required_parameters){
-        // merge options passed by localy and globally NOTE: global options will override local on if same value passed from both of them
-        let uniqueOptions = {...localOptions, ...this.options};
-        let isThereAnyOptions = Object.keys(uniqueOptions);
-        
-        // check whether any parameters passed
-        if(isThereAnyOptions.length > 0){
-            // check whether limit parameter passed and it is required for particular endpoint (ex: it is not requrid for add())
-            if(uniqueOptions['limit'] >= 0 && required_parameters['limit']){
-                url = `${url}?limit=${uniqueOptions['limit']}`
-            }
-
-            // check whether det_prob_threshold parameter passed and is it required for particular endpoint
-            if(uniqueOptions['det_prob_threshold'] >= 0 && required_parameters['det_prob_threshold']){
-                url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
-            }
-
-            // check whether prediction_count passed and is it required for particular endpoint
-            if(uniqueOptions['prediction_count'] >= 0 && required_parameters['prediction_count']){
-                url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
-            }
-        }
-
-        return url;
+        this.base_url = 'api/v1/recognition/faces';
+        this.recognize_base_url = "api/v1/recognition/recognize";
     }
 
     /**
@@ -71,23 +32,44 @@ class RecognitionService {
      * @returns {Promise}
      */
     recognize(image_path, options){
+        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
-        let required_url_parameters = {limit: true, det_prob_threshold: true, prediction_count: true };
+        let required_url_parameters = {
+            limit: true, 
+            det_prob_threshold: true, 
+            prediction_count: true,
+            face_plugins: true,
+            status: true
+        };
+
         // add parameters to basic url
-        let url = this.get_full_url();
-        url = `${url}/recognize`;
-        url = this.add_options_to_url(url, options, required_url_parameters);
+        let full_url = get_full_url(this.recognize_base_url, this.server, this.port)
+        let url = add_options_to_url(full_url, this.options, options, required_url_parameters);
+
+        // regex to check passed parameter is url or relative path
+        let validUrl = isUrl(image_path)
 
         return new Promise((resolve, reject) => {
-            recognition_endpoints.recognize_face_request(image_path, url, this.key)
-                .then(response => {
-                    resolve(response.data)
-                })
-                .catch(error => {
-                    reject(error.response.data)
-                })
-        })
+            if(validUrl){
+                recognition_endpoints.image_url_request(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }else {
+                recognition_endpoints.face_request(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }
+            
+        })  
     }
 
     /**
@@ -95,7 +77,8 @@ class RecognitionService {
      * @returns {Object}
      */
     getFaceCollection(){
-        let url = this.get_full_url();
+        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        let url = get_full_url(this.base_url, this.server, this.port)
         let key = this.key;
         let that = this;
 
@@ -111,7 +94,7 @@ class RecognitionService {
                             resolve(response.data)
                         })
                         .catch(error => {
-                            reject(error.response.data)
+                            reject(error)
                         })
                 })
             },
@@ -126,29 +109,30 @@ class RecognitionService {
                 // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
                 // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
                 let required_url_parameters = { det_prob_threshold: true };
-                let urlRegEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-                let isUrl = urlRegEX.test(image_path);
+
+                // regex to check passed parameter is url or relative path
+                let validUrl = isUrl(image_path)
                 
                 // add parameters to basic url
                 url = `${url}?subject=${subject}`
-                url = that.add_options_to_url(url, options, required_url_parameters);
+                url = add_options_to_url(url, that.options, options, required_url_parameters);
 
                 return new Promise((resolve, reject) => {
-                    if(isUrl){
-                        recognition_endpoints.add_with_url_request(image_path, url, key)
+                    if(validUrl){
+                        recognition_endpoints.image_url_request(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
                             .catch(error => {
-                                reject(error.response.data)
+                                reject(error)
                             })
                     }else {
-                        recognition_endpoints.add_request(image_path, url, key)
+                        recognition_endpoints.face_request(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
                             .catch(error => {
-                                reject(error.response.data)
+                                reject(error)
                             })
                     }
                     
@@ -164,20 +148,39 @@ class RecognitionService {
             verify(image_path, image_id, options){
                 // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
                 // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
-                let required_url_parameters = { det_prob_threshold: true, prediction_count: true };
+                let required_url_parameters = { 
+                    limit: true,
+                    det_prob_threshold: true, 
+                    face_plugins: true,
+                    status: true
+                };
                 // add parameters to basic url
                 url = `${url}/${image_id}/verify`;
-                url = that.add_options_to_url(url, options, required_url_parameters);
+                url = add_options_to_url(url, that.options, options, required_url_parameters);
+
+                // regex to check passed parameter is url or relative path
+                let validUrl = isUrl(image_path)
                
                 return new Promise((resolve, reject) => {
-                    recognition_endpoints.verify_face_request(image_path, url, key)
-                        .then(response => {
-                            resolve(response.data)
-                        })
-                        .catch(error => {
-                            reject(error.response.data)
-                        })
-                })
+                    if(validUrl){
+                        recognition_endpoints.image_url_request(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                    }else {
+                        recognition_endpoints.face_request(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                    }
+                    
+                })   
             },
 
             /**
@@ -194,7 +197,7 @@ class RecognitionService {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            reject(error.response.data);
+                            reject(error);
                         })
                 })
             },
@@ -213,7 +216,7 @@ class RecognitionService {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            reject(error.response.data);
+                            reject(error);
                         })
                 })
             },
@@ -229,7 +232,7 @@ class RecognitionService {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            reject(error.response.data);
+                            reject(error);
                         })
                 })
             }
