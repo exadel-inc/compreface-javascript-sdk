@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
+import { common_endpoints } from '../endpoints/common_endpoints.js';
 import { common_functions } from '../functions/index.js';
 
 class RecognitionService {
@@ -53,6 +54,14 @@ class RecognitionService {
         return new Promise((resolve, reject) => {
             if(validUrl){
                 recognition_endpoints.image_url_request(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }else if(image_path instanceof Blob){
+                common_endpoints.upload_blob(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -126,6 +135,14 @@ class RecognitionService {
                             .catch(error => {
                                 reject(error)
                             })
+                    }else if(image_path instanceof Blob){
+                        common_endpoints.upload_blob(image_path, url, this.key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
                     }else {
                         recognition_endpoints.face_request(image_path, url, key)
                             .then(response => {
@@ -164,6 +181,14 @@ class RecognitionService {
                 return new Promise((resolve, reject) => {
                     if(validUrl){
                         recognition_endpoints.image_url_request(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                    }else if(image_path instanceof Blob){
+                        common_endpoints.upload_blob(image_path, url, this.key)
                             .then(response => {
                                 resolve(response.data)
                             })
