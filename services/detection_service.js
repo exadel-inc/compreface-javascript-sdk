@@ -16,6 +16,7 @@
 
 import { detection_endpoints } from '../endpoints/detection_endpoints.js';
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
+import { common_endpoints } from '../endpoints/common_endpoints.js';
 import { common_functions } from '../functions/index.js';
 
 class DetectionService {
@@ -53,6 +54,14 @@ class DetectionService {
         return new Promise((resolve, reject) => {
             if(validUrl){
                 recognition_endpoints.image_url_request(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }else if(image_path instanceof Blob) {
+                common_endpoints.upload_blob(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
