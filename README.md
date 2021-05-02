@@ -9,6 +9,8 @@ CompreFace JavaScript SDK makes face recognition into your application even easi
     - [Initialization](#initialization)
     - [Adding faces into a face collection](#adding-faces-into-a-face-collection)
     - [Recognition](#recognition)
+    - [Enviroments](#enviroments)
+    - [Webcam demo](#webcam-demo)
 - [Reference](#reference)
     - [CompreFace Global Object](#compreface-global-object)
     - [Recognition Service](#recognition-service)
@@ -101,6 +103,30 @@ recognitionService.recognize(path_to_image)
         console.log(`Oops! There is problem with recognizing image ${error}`)
     })
 ```
+
+### Enviroments
+NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and relative path (from local machine).
+
+| Enviroments | from URL | with Blob format | from local machine|
+| ------------|--------- | ---------------- | ----------------  | 
+| Browser     |    ✔     |  ✔              |  ✘                | 
+| Nodejs      |    ✔     |  ✔              |  ✔                | 
+
+### Webcam demo
+
+In this part of docs we show how to use our detection service with webcamera. NOTE: we have chosen reactjs as it is today's one of the most popular UI library.
+
+1 Install reactjs
+
+```npx create-react-app compreface-demo```
+
+2 Enter to project folder
+
+```cd compreface-demo```
+
+3 Install CompreFace SDK
+
+```npm i @exadel/compreface-js-sdk```
 
 ## Reference
 
