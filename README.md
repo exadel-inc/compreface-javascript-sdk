@@ -116,15 +116,15 @@ NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and re
 
 In this part of docs we show how to use our detection service with webcamera. NOTE: we have chosen reactjs as it is today's one of the most popular UI library.
 
-1 Install reactjs
+1. Install reactjs
 
 ```npx create-react-app compreface-demo```
 
-2 Enter to project folder
+2. Enter to project folder
 
 ```cd compreface-demo```
 
-3 Install CompreFace SDK
+3. Install CompreFace SDK
 
 ```npm i @exadel/compreface-js-sdk```
 
