@@ -13,6 +13,8 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+import axios from 'axios';
+import FormData from 'form-data';
 
 // Collection of common endpoints that used by almost all services
 const common_endpoints = {
