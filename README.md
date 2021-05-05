@@ -114,7 +114,24 @@ NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and re
 
 ### Webcam demo
 
-In this part of docs we show how to use our detection service with webcamera. NOTE: we have chosen reactjs as it is today's one of the most popular UI library.
+In this part of docs we show how to use our detection service with webcamera. **NOTE:** we have chosen reactjs as it is today's one of the most popular UI library.
+
+1. Clone our repository
+2. Enter to ```webcam_demo``` folder and install packages
+
+``` cd webcam_demo```
+
+```npm install```
+
+3. Change detection API key inside ```src > App.js``` line ```40```
+
+4. Start project
+
+```npm start```
+
+5. Click ```video start``` button to start your webcamera 
+
+*OR follow below instructions to create project by yourself*
 
 1. Install reactjs
 

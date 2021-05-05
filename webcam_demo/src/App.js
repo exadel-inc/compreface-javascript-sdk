@@ -37,7 +37,7 @@ function App() {
         // CompreFace init
         let server = "http://localhost";
         let port = 8000;
-        let detection_key = "059b56a9-416c-4c46-b162-f049952f0380";
+        let detection_key = "your_api_key";
   
         let core = new CompreFace(server, port);
         let detection_service = core.initFaceDetectionService(detection_key);
