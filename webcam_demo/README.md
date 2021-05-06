@@ -1,4 +1,6 @@
-In this part of docs we show how to use our detection service with webcamera. **NOTE:** we have chosen reactjs as it is today's one of the most popular UI library.
+# Webcam Demo
+
+In this documentation we show how to use our detection service with webcamera. **NOTE:** we have chosen reactjs as it is today's one of the most popular UI library.
 
 1. Clone our repository
 2. Enter to ```webcam_demo``` folder and install packages
