@@ -44,31 +44,88 @@ class VerificationService {
         let isSourceImageUrl = isUrl(source_image_path);
         let isTargetImageUrl = isUrl(target_image_path);
 
+        let isSourceBlob = source_image_path instanceof Blob;
+        let isTargetBlob = target_image_path instanceof Blob;
+
         return new Promise((resolve, reject) => {
-            if(isSourceImageUrl && isTargetImageUrl){
-                verification_endpoints.both_url_request(source_image_path, target_image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }else if (!isSourceImageUrl && !isTargetImageUrl){
-                verification_endpoints.verify_face_request(source_image_path, target_image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }else if(!isSourceImageUrl || !isTargetImageUrl){
-                verification_endpoints.one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
+            if(isSourceImageUrl){
+                if(isTargetImageUrl){
+                    verification_endpoints.both_url_request(source_image_path, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else if(isTargetBlob){
+                    verification_endpoints.url_blob_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else {
+                    verification_endpoints.one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }
+            }else if(isSourceBlob){
+                if(isTargetImageUrl){
+                    verification_endpoints.url_blob_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else if(isTargetBlob){
+                    verification_endpoints.both_blob_request(source_image_path, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else {
+                    verification_endpoints.one_blob_request(source_image_path, isSourceBlob, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }
+            }else {
+                if(isTargetImageUrl){
+                    verification_endpoints.one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else if(isTargetBlob){
+                    verification_endpoints.one_blob_request(source_image_path, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else {
+                    verification_endpoints.verify_face_request(source_image_path, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }
             }
         })
     }

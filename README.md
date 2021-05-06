@@ -9,6 +9,8 @@ CompreFace JavaScript SDK makes face recognition into your application even easi
     - [Initialization](#initialization)
     - [Adding faces into a face collection](#adding-faces-into-a-face-collection)
     - [Recognition](#recognition)
+    - [Enviroments](#enviroments)
+    - [Webcam demo](#webcam-demo)
 - [Reference](#reference)
     - [CompreFace Global Object](#compreface-global-object)
     - [Recognition Service](#recognition-service)
@@ -101,6 +103,17 @@ recognitionService.recognize(path_to_image)
         console.log(`Oops! There is problem with recognizing image ${error}`)
     })
 ```
+
+### Enviroments
+NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and relative path (from local machine).
+
+| Enviroments | from URL | with Blob format | from local machine|
+| ------------|--------- | ---------------- | ----------------  | 
+| Browser     |    ✔     |  ✔              |  ✘                | 
+| Nodejs      |    ✔     |  ✔              |  ✔                | 
+
+### Webcam demo
+[Documentation is here](/webcam_demo)
 
 ## Reference
 
@@ -209,7 +222,7 @@ The first argument is the image location, it could be a URL or a path on the loc
 
 | Argument        | Type   | Required | Notes                                     |
 | --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL or local machine path to the image you want to recognize    |
+| image_location  | string | required | URL, image in BLOB format or image from your local machine|
 | options         | string | optional | Object that defines recognition options   |
 
 Supported options:
@@ -315,7 +328,7 @@ Adds an image to your face collection.
 
 | Argument        | Type   | Required | Notes                                     |
 | --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL or local machine path to the image  you want  to add to face collection     |
+| image_location  | string | required | URL, image in BLOB format or image from your local machine |
 | subject         | string | required | Name or any other person ID. It can be just a random string you generate and save for further identification    |
 | options         | string | optional | Object that defines adding options   |
 
@@ -481,7 +494,7 @@ Compares similarities of given image with image from your face collection.
 
 | Argument        | Type   | Required | Notes                                     |
 | --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL or local machine path to the image you want to recognize    |
+| image_location  | string | required | URL, image in BLOB format or image from your local machine |
 | options         | string | optional | Object that defines recognition options   |
 
 Supported options:
@@ -576,7 +589,7 @@ The first argument is the image location, it could be a URL or a path on the loc
 
 | Argument        | Type   | Required | Notes                                     |
 | --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL or local machine path to the image you want to recognize    |
+| image_location  | string | required | URL, image in BLOB format or image from your local machine |
 | options         | string | optional | Object that defines detection options   |
 
 Supported options:
@@ -667,8 +680,8 @@ The first two arguments are the image location, it could be a URL or a path on t
 
 | Argument               | Type   | Required | Notes                                     |
 | ---------------------- | ------ | -------- | ----------------------------------------- |
-| source_image_location  | string | required | URL or local machine path to the source image you want to compare    |
-| target_image_location  | string | required | URL or local machine path to the target image you want to compare    |
+| source_image_location  | string | required | URL, source image in BLOB format or source image from your local machine  |
+| target_image_location  | string | required | URL, target image in BLOB format or target image from your local machine |
 | options                | string | optional | Object that defines detection options   |
 
 Supported options:
