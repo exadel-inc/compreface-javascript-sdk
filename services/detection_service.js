@@ -14,7 +14,6 @@
  * permissions and limitations under the License.
  */
 
-import { detection_endpoints } from '../endpoints/detection_endpoints.js';
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
 import { common_endpoints } from '../endpoints/common_endpoints.js';
 import { common_functions } from '../functions/index.js';
@@ -50,6 +49,7 @@ class DetectionService {
         
         // regex to check passed parameter is url or relative path
         let validUrl = isUrl(image_path)
+        const { upload_blob, upload_path } = common_endpoints;
 
         return new Promise((resolve, reject) => {
             if(validUrl){
@@ -61,7 +61,7 @@ class DetectionService {
                         reject(error)
                     })
             }else if(image_path instanceof Blob) {
-                common_endpoints.upload_blob(image_path, url, this.key)
+                upload_blob(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -69,7 +69,7 @@ class DetectionService {
                         reject(error)
                     })
             }else {
-                detection_endpoints.detect_request(image_path, url, this.key)
+                upload_path(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
