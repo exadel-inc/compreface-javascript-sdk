@@ -65,6 +65,42 @@ const common_endpoints = {
             }
         })
     },
+
+    /**
+     * Add image (from url) with subject
+     * @param {String} image_url 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+    async upload_url(image_url, url, api_key){
+        var bodyFormData = new FormData();
+        
+        return new Promise( async (resolve, reject) => {
+            await axios.get(image_url, { responseType: 'stream' })
+                .then( async (response) => {
+                    let image_extention = response.headers['content-type'].split("/")[1]
+                    bodyFormData.append('file', response.data, `example.${image_extention}`);   
+                    try {
+                        const res = await axios.post( url, bodyFormData, {
+                            headers: {
+                                ...bodyFormData.getHeaders(),
+                                "x-api-key": api_key
+                            },
+                        })
+
+                        resolve(res)
+                    } catch (error) {
+                        reject(error)
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
+
+    
 }
 
 export { common_endpoints }

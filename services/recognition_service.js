@@ -34,6 +34,7 @@ class RecognitionService {
      */
     recognize(image_path, options){
         const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        const { upload_blob, upload_path, upload_url } = common_endpoints;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = {
@@ -50,11 +51,10 @@ class RecognitionService {
 
         // regex to check passed parameter is url or relative path
         let validUrl = isUrl(image_path)
-        const { upload_blob, upload_path } = common_endpoints;
 
         return new Promise((resolve, reject) => {
             if(validUrl){
-                recognition_endpoints.image_url_request(image_path, url, this.key)
+                upload_url(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -88,6 +88,8 @@ class RecognitionService {
      */
     getFaceCollection(){
         const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        const { upload_blob, upload_path, upload_url } = common_endpoints;
+
         let url = get_full_url(this.base_url, this.server, this.port)
         let key = this.key;
         let that = this;
@@ -126,11 +128,10 @@ class RecognitionService {
                 // add parameters to basic url
                 url = `${url}?subject=${subject}`
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
-                const { upload_path, upload_blob } = common_endpoints;
 
                 return new Promise((resolve, reject) => {
                     if(validUrl){
-                        recognition_endpoints.image_url_request(image_path, url, key)
+                        upload_url(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
@@ -179,11 +180,10 @@ class RecognitionService {
 
                 // regex to check passed parameter is url or relative path
                 let validUrl = isUrl(image_path)
-                const { upload_path, upload_blob } = common_endpoints;
                
                 return new Promise((resolve, reject) => {
                     if(validUrl){
-                        recognition_endpoints.image_url_request(image_path, url, key)
+                        upload_url(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
