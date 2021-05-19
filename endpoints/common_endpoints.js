@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 import axios from 'axios';
+import fs from 'fs';
 import FormData from 'form-data';
 
 // Collection of common endpoints that used by almost all services

@@ -33,7 +33,7 @@ class RecognitionService {
      * @returns {Promise}
      */
     recognize(image_path, options){
-        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
         const { upload_blob, upload_path, upload_url } = common_endpoints;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
@@ -61,8 +61,8 @@ class RecognitionService {
                     .catch(error => {
                         reject(error)
                     })
-            }else if(image_path instanceof Blob){
-                upload_blob(image_path, url, this.key)
+            }else if(isPathRelative(image_path)){
+                upload_path(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -70,7 +70,7 @@ class RecognitionService {
                         reject(error)
                     })
             }else {
-                upload_path(image_path, url, this.key)
+                upload_blob(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -87,7 +87,7 @@ class RecognitionService {
      * @returns {Object}
      */
     getFaceCollection(){
-        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
         const { upload_blob, upload_path, upload_url } = common_endpoints;
 
         let url = get_full_url(this.base_url, this.server, this.port)
@@ -138,16 +138,17 @@ class RecognitionService {
                             .catch(error => {
                                 reject(error)
                             })
-                    }else if(image_path instanceof Blob){
-                        upload_blob(image_path, url, key)
+                    }else if(isPathRelative(image_path)){
+                        upload_path(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
                             .catch(error => {
                                 reject(error)
                             })
+                        
                     }else {
-                        upload_path(image_path, url, key)
+                        upload_blob(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
@@ -190,15 +191,7 @@ class RecognitionService {
                             .catch(error => {
                                 reject(error)
                             })
-                    }else if(image_path instanceof Blob){
-                        upload_blob(image_path, url, this.key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                    }else {
+                    }else if(isPathRelative(image_path)){
                         upload_path(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
@@ -206,8 +199,15 @@ class RecognitionService {
                             .catch(error => {
                                 reject(error)
                             })
+                    }else {
+                        upload_blob(image_path, url, this.key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
                     }
-                    
                 })   
             },
 

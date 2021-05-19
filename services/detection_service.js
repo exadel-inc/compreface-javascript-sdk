@@ -33,7 +33,7 @@ class DetectionService {
      * @returns 
      */
     detect(image_path, localOptions){
-        const { get_full_url, add_options_to_url, isUrl } = common_functions;
+        const { get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
         const { upload_blob, upload_path, upload_url } = common_endpoints;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
@@ -59,8 +59,8 @@ class DetectionService {
                     .catch(error => {
                         reject(error)
                     })
-            }else if(image_path instanceof Blob) {
-                upload_blob(image_path, url, this.key)
+            }else if(isPathRelative(image_path)) {
+                upload_path(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -68,7 +68,7 @@ class DetectionService {
                         reject(error)
                     })
             }else {
-                upload_path(image_path, url, this.key)
+                upload_blob(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
