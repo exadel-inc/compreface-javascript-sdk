@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
+import { common_endpoints } from '../endpoints/common_endpoints.js';
 import { common_functions } from '../functions/index.js';
 
 class RecognitionService {
@@ -32,7 +33,8 @@ class RecognitionService {
      * @returns {Promise}
      */
     recognize(image_path, options){
-        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
+        const { upload_blob, upload_path, upload_url } = common_endpoints;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = {
@@ -52,7 +54,15 @@ class RecognitionService {
 
         return new Promise((resolve, reject) => {
             if(validUrl){
-                recognition_endpoints.image_url_request(image_path, url, this.key)
+                upload_url(image_path, url, this.key)
+                    .then(response => {
+                        resolve(response.data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            }else if(isPathRelative(image_path)){
+                upload_path(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -60,7 +70,7 @@ class RecognitionService {
                         reject(error)
                     })
             }else {
-                recognition_endpoints.face_request(image_path, url, this.key)
+                upload_blob(image_path, url, this.key)
                     .then(response => {
                         resolve(response.data)
                     })
@@ -77,7 +87,9 @@ class RecognitionService {
      * @returns {Object}
      */
     getFaceCollection(){
-        const{ get_full_url, add_options_to_url, isUrl } = common_functions;
+        const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
+        const { upload_blob, upload_path, upload_url } = common_endpoints;
+
         let url = get_full_url(this.base_url, this.server, this.port)
         let key = this.key;
         let that = this;
@@ -119,15 +131,24 @@ class RecognitionService {
 
                 return new Promise((resolve, reject) => {
                     if(validUrl){
-                        recognition_endpoints.image_url_request(image_path, url, key)
+                        upload_url(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
                             .catch(error => {
                                 reject(error)
                             })
+                    }else if(isPathRelative(image_path)){
+                        upload_path(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                        
                     }else {
-                        recognition_endpoints.face_request(image_path, url, key)
+                        upload_blob(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
@@ -163,7 +184,15 @@ class RecognitionService {
                
                 return new Promise((resolve, reject) => {
                     if(validUrl){
-                        recognition_endpoints.image_url_request(image_path, url, key)
+                        upload_url(image_path, url, key)
+                            .then(response => {
+                                resolve(response.data)
+                            })
+                            .catch(error => {
+                                reject(error)
+                            })
+                    }else if(isPathRelative(image_path)){
+                        upload_path(image_path, url, key)
                             .then(response => {
                                 resolve(response.data)
                             })
@@ -171,7 +200,7 @@ class RecognitionService {
                                 reject(error)
                             })
                     }else {
-                        recognition_endpoints.face_request(image_path, url, key)
+                        upload_blob(image_path, url, this.key)
                             .then(response => {
                                 resolve(response.data)
                             })
@@ -179,7 +208,6 @@ class RecognitionService {
                                 reject(error)
                             })
                     }
-                    
                 })   
             },
 

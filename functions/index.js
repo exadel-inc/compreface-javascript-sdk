@@ -37,6 +37,17 @@ const common_functions = {
         return isUrl;
     },
 
+    /**
+     * Check whether string is relative path or not
+     * @param {String} path 
+     * @returns 
+     */
+    isPathRelative(path) {
+        if(typeof path !== 'string') return false 
+        let isAbsolute = /^(?:\/|[a-z]+:\/\/)/.test(path)
+        return !isAbsolute;
+    },
+
      /**
      * Add extra options to url
      * @param {String} url
@@ -47,7 +58,7 @@ const common_functions = {
      */
     add_options_to_url(url, globalOptions, localOptions, required_parameters){
         // merge options passed by localy and globally NOTE: global options will override local on if same value passed from both of them
-        let uniqueOptions = {...localOptions, globalOptions};
+        let uniqueOptions = {...localOptions, ...globalOptions};
         let isThereAnyOptions = Object.keys(uniqueOptions);
         
         // check whether any parameters passed

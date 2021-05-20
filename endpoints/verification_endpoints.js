@@ -100,61 +100,168 @@ const verification_endpoints = {
      */
     one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, api_key ){
         var bodyFormData = new FormData();
+        let path_is_url = [];
+        let path_is_relative = [];
 
         if(isSourceImageUrl){
-            bodyFormData.append('target_image', fs.createReadStream(target_image_path), { knownLength: fs.statSync(target_image_path).size });
+            path_is_url[0] = "source_image";
+            path_is_url[1] = source_image_path;
 
-            return new Promise( async (resolve, reject) => {
-                await axios.get(source_image_path, { responseType: 'stream' })
-                    .then( async (response) => {
-                        let image_extention = response.headers['content-type'].split("/")[1]
-                        bodyFormData.append('source_image', response.data, `example.${image_extention}`);
+            path_is_relative[0] = "target_image";
+            path_is_relative[1] = target_image_path;
+        }else{
+            path_is_url[0] = "target_image";
+            path_is_url[1] = target_image_path;
 
-                        try {
-                            const res = await axios.post( url, bodyFormData, {
-                                headers: {
-                                    ...bodyFormData.getHeaders(),
-                                    "x-api-key": api_key
-                                },
-                            })
-    
-                            resolve(res)
-                        } catch (error) {
-                            reject(error)
-                        }
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            })
-        }else {
-            bodyFormData.append('source_image', fs.createReadStream(source_image_path), { knownLength: fs.statSync(source_image_path).size });
-            
-            return new Promise( async (resolve, reject) => {
-                await axios.get(target_image_path, { responseType: 'stream' })
-                    .then( async (response) => {
-                        let image_extention = response.headers['content-type'].split("/")[1]
-                        bodyFormData.append('target_image', response.data, `example.${image_extention}`);
-                           
-                        try {
-                            const res = await axios.post( url, bodyFormData, {
-                                headers: {
-                                    ...bodyFormData.getHeaders(),
-                                    "x-api-key": api_key
-                                },
-                            })
-    
-                            resolve(res)
-                        } catch (error) {
-                            reject(error)
-                        }
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            })
+            path_is_relative[0] = "source_image";
+            path_is_relative[1] = source_image_path;
         }
-    }
+        bodyFormData.append(path_is_relative[0], fs.createReadStream(path_is_relative[1]), { knownLength: fs.statSync(path_is_relative[1]).size });
+
+        return new Promise( async (resolve, reject) => {
+            await axios.get(path_is_url[1], { responseType: 'stream' })
+                .then( async (response) => {
+                    let image_extention = response.headers['content-type'].split("/")[1]
+                    bodyFormData.append(path_is_url[0], response.data, `example.${image_extention}`);
+
+                    try {
+                        const res = await axios.post( url, bodyFormData, {
+                            headers: {
+                                ...bodyFormData.getHeaders(),
+                                "x-api-key": api_key
+                            },
+                        })
+
+                        resolve(res)
+                    } catch (error) {
+                        reject(error)
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
+    /**
+     * Verify face(s) from given blob data
+     * @param {String} source_image_path 
+     * @param {String} target_image_path 
+     * @param {Boolean} isSourceBlob
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+    url_blob_request(source_image_path, isSourceImageUrl, target_image_path, url, api_key){
+        let bodyFormData = new FormData();
+        let path_is_url = [];
+        let path_is_blob = [];
+
+        if(isSourceImageUrl){
+            path_is_url[0] = "source_image";
+            path_is_url[1] = source_image_path;
+
+            path_is_blob[0] = "target_image";
+            path_is_blob[1] = target_image_path;
+        }else{
+            path_is_url = "target_image";
+            path_is_url[1] = target_image_path;
+
+            path_is_blob = "source_image";
+            path_is_blob[1] = source_image_path;
+        }
+        bodyFormData.append(path_is_blob[0], path_is_blob[1], 'example.jpg');
+
+        return new Promise( async (resolve, reject) => {
+            await axios.get(path_is_url[1], { responseType: 'stream' })
+                .then( async (response) => {
+                    let image_extention = response.headers['content-type'].split("/")[1]
+                    bodyFormData.append(path_is_url[0], response.data, `example.${image_extention}`);
+
+                    try {
+                        const res = await axios.post( url, bodyFormData, {
+                            headers: {
+                                ...bodyFormData.getHeaders(),
+                                "x-api-key": api_key
+                            },
+                        })
+
+                        resolve(res)
+                    } catch (error) {
+                        reject(error)
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
+
+    /**
+     * Both source and target images are blob
+     * @param {Blob} source_image_blob 
+     * @param {Blob} target_image_blob 
+     * @param {String} url 
+     * @param {String} api_key 
+     */
+    both_blob_request(source_image_blob, target_image_blob, url, api_key){ 
+        var bodyFormData = new FormData();
+
+        bodyFormData.append('source_image', source_image_blob, 'example.jpg');
+        bodyFormData.append('target_image', target_image_blob, 'example1.jpg');
+
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, bodyFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        "x-api-key": api_key
+                    },
+                })
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
+    one_blob_request(source_image_path, isSourceImageBlob, target_image_path, url, api_key ){
+        var bodyFormData = new FormData();
+        let path_is_blob = [];
+        let path_is_relative = [];
+
+        if(isSourceImageBlob){
+            path_is_blob[0] = "source_image";
+            path_is_blob[1] = source_image_path;
+
+            path_is_relative[0] = "target_image";
+            path_is_relative[1] = target_image_path;
+        }else{
+            path_is_blob = "target_image";
+            path_is_blob[1] = target_image_path;
+
+            path_is_relative = "source_image";
+            path_is_relative[1] = source_image_path;
+        }
+
+        bodyFormData.append(path_is_relative[0], fs.createReadStream(path_is_relative[1]), { knownLength: fs.statSync(path_is_relative[1]).size });
+        bodyFormData.append(path_is_blob[0], path_is_blob[1], 'example.jpg');
+
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, bodyFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        "x-api-key": api_key
+                    },
+                })
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
 
 
 }

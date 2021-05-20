@@ -1,12 +1,12 @@
 {
   "name": "@exadel/compreface-js-sdk",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "license": "Apache-2.0",
   "description": "JavaScript SDK for CompreFace - free and open-source face recognition system from Exadel",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "repository": {
     "type": "git",
@@ -36,5 +36,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.0"
   }
 }
