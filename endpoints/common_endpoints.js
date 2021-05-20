@@ -14,6 +14,7 @@
  * permissions and limitations under the License.
  */
 import axios from 'axios';
+import fs from 'fs';
 import FormData from 'form-data';
 
 // Collection of common endpoints that used by almost all services
@@ -36,7 +37,71 @@ const common_endpoints = {
                 reject(error)
             }
         })
-    }
+    },
+
+    /**
+     * Upload from local machine
+     * @param {String} image_path 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+     async upload_path(image_path, url, api_key ){
+        var bodyFormData = new FormData();
+        bodyFormData.append('file', fs.createReadStream(image_path), { knownLength: fs.statSync(image_path).size }); 
+
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, bodyFormData, {
+                    headers: {
+                        ...bodyFormData.getHeaders(),
+                        "Content-Length": bodyFormData.getLengthSync(),
+                        "x-api-key": api_key
+                    },
+                })
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
+    /**
+     * Add image (from url) with subject
+     * @param {String} image_url 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+    async upload_url(image_url, url, api_key){
+        var bodyFormData = new FormData();
+        
+        return new Promise( async (resolve, reject) => {
+            await axios.get(image_url, { responseType: 'stream' })
+                .then( async (response) => {
+                    let image_extention = response.headers['content-type'].split("/")[1]
+                    bodyFormData.append('file', response.data, `example.${image_extention}`);   
+                    try {
+                        const res = await axios.post( url, bodyFormData, {
+                            headers: {
+                                ...bodyFormData.getHeaders(),
+                                "x-api-key": api_key
+                            },
+                        })
+
+                        resolve(res)
+                    } catch (error) {
+                        reject(error)
+                    }
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
+
+    
 }
 
 export { common_endpoints }

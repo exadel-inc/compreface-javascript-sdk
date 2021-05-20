@@ -110,14 +110,13 @@ const verification_endpoints = {
             path_is_relative[0] = "target_image";
             path_is_relative[1] = target_image_path;
         }else{
-            path_is_url = "target_image";
+            path_is_url[0] = "target_image";
             path_is_url[1] = target_image_path;
 
-            path_is_relative = "source_image";
+            path_is_relative[0] = "source_image";
             path_is_relative[1] = source_image_path;
         }
-
-        bodyFormData.append(path_is_relative[0], fs.createReadStream(path_is_relative[1]), { knownLength: fs.statSync(target_image_path).size });
+        bodyFormData.append(path_is_relative[0], fs.createReadStream(path_is_relative[1]), { knownLength: fs.statSync(path_is_relative[1]).size });
 
         return new Promise( async (resolve, reject) => {
             await axios.get(path_is_url[1], { responseType: 'stream' })
@@ -245,7 +244,7 @@ const verification_endpoints = {
             path_is_relative[1] = source_image_path;
         }
 
-        bodyFormData.append(path_is_relative[0], fs.createReadStream(path_is_relative[1]), { knownLength: fs.statSync(target_image_path).size });
+        bodyFormData.append(path_is_relative[0], fs.createReadStream(path_is_relative[1]), { knownLength: fs.statSync(path_is_relative[1]).size });
         bodyFormData.append(path_is_blob[0], path_is_blob[1], 'example.jpg');
 
         return new Promise( async (resolve, reject) => {

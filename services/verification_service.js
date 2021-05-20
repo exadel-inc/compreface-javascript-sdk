@@ -27,7 +27,7 @@ class VerificationService {
     }
 
     verify(source_image_path, target_image_path, options){
-        const { get_full_url, add_options_to_url, isUrl } = common_functions;
+        const { get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
         // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = { 
@@ -44,8 +44,8 @@ class VerificationService {
         let isSourceImageUrl = isUrl(source_image_path);
         let isTargetImageUrl = isUrl(target_image_path);
 
-        let isSourceBlob = source_image_path instanceof Blob;
-        let isTargetBlob = target_image_path instanceof Blob;
+        let isSourceRelativePath = isPathRelative(source_image_path);
+        let isTargetRelativePath = isPathRelative(target_image_path);
 
         return new Promise((resolve, reject) => {
             if(isSourceImageUrl){
@@ -57,15 +57,7 @@ class VerificationService {
                         .catch(error => {
                             reject(error)
                         })
-                }else if(isTargetBlob){
-                    verification_endpoints.url_blob_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
-                        .then(response => {
-                            resolve(response.data)
-                        })
-                        .catch(error => {
-                            reject(error)
-                        })
-                }else {
+                }else if(isTargetRelativePath){
                     verification_endpoints.one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
@@ -73,9 +65,7 @@ class VerificationService {
                         .catch(error => {
                             reject(error)
                         })
-                }
-            }else if(isSourceBlob){
-                if(isTargetImageUrl){
+                }else {
                     verification_endpoints.url_blob_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
@@ -83,8 +73,19 @@ class VerificationService {
                         .catch(error => {
                             reject(error)
                         })
-                }else if(isTargetBlob){
-                    verification_endpoints.both_blob_request(source_image_path, target_image_path, url, this.key)
+                }
+            }else if(isSourceRelativePath){
+                if(isTargetImageUrl){
+                    console.log("hey I'm here", isSourceImageUrl)
+                    verification_endpoints.one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                }else if(isTargetRelativePath){
+                    verification_endpoints.verify_face_request(source_image_path, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
                         })
@@ -92,7 +93,7 @@ class VerificationService {
                             reject(error)
                         })
                 }else {
-                    verification_endpoints.one_blob_request(source_image_path, isSourceBlob, target_image_path, url, this.key)
+                    verification_endpoints.one_blob_request(source_image_path, false, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
                         })
@@ -102,23 +103,23 @@ class VerificationService {
                 }
             }else {
                 if(isTargetImageUrl){
-                    verification_endpoints.one_url_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
+                    verification_endpoints.url_blob_request(source_image_path, isSourceImageUrl, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
                         })
                         .catch(error => {
                             reject(error)
                         })
-                }else if(isTargetBlob){
-                    verification_endpoints.one_blob_request(source_image_path, target_image_path, url, this.key)
+                }else if(isTargetRelativePath){
+                    verification_endpoints.one_blob_request(source_image_path, true, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
                         })
                         .catch(error => {
                             reject(error)
-                        })
+                        })    
                 }else {
-                    verification_endpoints.verify_face_request(source_image_path, target_image_path, url, this.key)
+                    verification_endpoints.both_blob_request(source_image_path, target_image_path, url, this.key)
                         .then(response => {
                             resolve(response.data)
                         })
