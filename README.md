@@ -38,7 +38,7 @@ Before using our SDK make sure you have installed CompreFace and Nodejs on your 
 | CompreFace JS SDK version | CompreFace 0.4.x | CompreFace 0.5.x |
 | --------------------------| ---------------- | ---------------- | 
 | 0.4.1                     | ✔                | ✘                | 
-| 0.5.0                     | ✘                | ✔                | 
+| 0.5.x                     | ✘                | ✔                | 
 
 ## Installation
 To add CompreFace JS SDK to your project, run the following command in the project folder:
