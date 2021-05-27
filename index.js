@@ -15,15 +15,4 @@
  */
 import { CompreFace } from './core/compre_face.js';
 
-let server = "http://localhost";
-let port = 8000;
-let image_url = "https://media.gettyimages.com/photos/woman-standing-on-city-street-looking-at-camera-picture-id1292452761?s=2048x2048";
-let image_id = "3f87a2cd-bf4e-4347-931d-44f7d797fc47";
-let key = "63a1f5cf-da50-4316-a1ce-50c13cac121b";
-
-let core = new CompreFace(server, port);
-let recognition_service = core.initFaceRecognitionService(key)
-let faceCollection = recognition_service.getFaceCollection();
-faceCollection.list()
-    .then(data => console.log(data))
-    .catch(error => console.error(error))
+export { CompreFace }
