@@ -38,13 +38,28 @@ const common_functions = {
     },
 
     /**
+     * Check whether string is base64
+     * @param {String} path 
+     * @returns 
+     */
+    isBase64(image_data){
+        let base64regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
+        let isBase64 = base64regex.test(image_data);
+        
+        console.log("path is base64", isBase64)
+
+        return isBase64;
+    },
+
+    /**
      * Check whether string is relative path or not
      * @param {String} path 
      * @returns 
      */
     isPathRelative(path) {
         if(typeof path !== 'string') return false 
-        let isAbsolute = /^(?:\/|[a-z]+:\/\/)/.test(path)
+        let isAbsolute = /^(?:\/|[a-z]+:\/\/)/.test(path);
+
         return !isAbsolute;
     },
 
