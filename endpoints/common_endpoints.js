@@ -19,6 +19,39 @@ import FormData from 'form-data';
 
 // Collection of common endpoints that used by almost all services
 const common_endpoints = {
+    /**
+     * @param {String} base64string 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+    async upload_base64(base64string, url, api_key){
+        let data = {
+            file: base64string
+        }
+
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "x-api-key": api_key
+                    },
+                })
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+
+    /**
+     * @param {Object} blobData 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
     async upload_blob(blobData, url, api_key){
         var bodyFormData = new FormData();
         bodyFormData.append('file', blobData, 'example.jpg');
@@ -100,8 +133,6 @@ const common_endpoints = {
                 })
         })
     },
-
-    
 }
 
 export { common_endpoints }
