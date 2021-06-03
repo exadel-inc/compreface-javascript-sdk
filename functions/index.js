@@ -45,8 +45,6 @@ const common_functions = {
     isBase64(image_data){
         let base64regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
         let isBase64 = base64regex.test(image_data);
-        
-        console.log("path is base64", isBase64)
 
         return isBase64;
     },
