@@ -9,7 +9,7 @@ CompreFace JavaScript SDK makes face recognition into your application even easi
     - [Initialization](#initialization)
     - [Adding faces into a face collection](#adding-faces-into-a-face-collection)
     - [Recognition](#recognition)
-    - [Enviroments](#enviroments)
+    - [Environments](#environments)
     - [Webcam demo](#webcam-demo)
 - [Reference](#reference)
     - [CompreFace Global Object](#compreface-global-object)
@@ -104,7 +104,7 @@ recognitionService.recognize(path_to_image)
     })
 ```
 
-### Enviroments
+### Environments
 NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and relative path (from local machine).
 
 | Enviroments | from URL | with Blob format | from local machine|
