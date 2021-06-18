@@ -13,9 +13,8 @@
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
-import { common_endpoints } from '../endpoints/common_endpoints.js';
 import { common_functions } from '../functions/index.js';
+import { upload } from '../endpoints/upload.js';
 
 class DetectionService {
     constructor(server, port, options, key){
@@ -34,8 +33,6 @@ class DetectionService {
      */
     detect(image_path, localOptions){
         const { get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
-        const { upload_blob, upload_path, upload_url } = common_endpoints;
-        // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = { 
             limit: true,
@@ -46,36 +43,15 @@ class DetectionService {
         let full_url = get_full_url(this.base_url, this.server, this.port)
         // add parameters to basic url
         let url = add_options_to_url(full_url, this.options, localOptions, required_url_parameters);
-        
-        // regex to check passed parameter is url or relative path
-        let validUrl = isUrl(image_path)
 
         return new Promise((resolve, reject) => {
-            if(validUrl){
-                upload_url(image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }else if(isPathRelative(image_path)) {
-                upload_path(image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }else {
-                upload_blob(image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }
+            upload(image_path, url, this.key)
+                .then(response => {
+                    resolve(response)
+                })
+                .catch(error => {
+                    reject(error)
+                }) 
         })
     }
 }
