@@ -73,32 +73,34 @@ const common_functions = {
         // merge options passed by localy and globally NOTE: global options will override local on if same value passed from both of them
         let uniqueOptions = {...localOptions, ...globalOptions};
         let isThereAnyOptions = Object.keys(uniqueOptions);
+        let isLimitOptionExist = false;
         
         // check whether any parameters passed
         if(isThereAnyOptions.length > 0){
-            // check whether limit parameter passed and it is allowed for particular endpoint (ex: it is not requrid for add())
+            // check limit parameter passed and it is allowed for particular endpoint (ex: it is not requrid for add())
             if(uniqueOptions['limit'] >= 0 && required_parameters['limit']){
+                isLimitOptionExist = true;
                 url = `${url}?limit=${uniqueOptions['limit']}`
             }
 
-            // check whether det_prob_threshold parameter passed and is it allowed for particular endpoint
+            // check det_prob_threshold parameter passed and is it allowed for particular endpoint
             if(uniqueOptions['det_prob_threshold'] >= 0 && required_parameters['det_prob_threshold']){
-                url = `${url}&det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
+                url = `${url}${isLimitOptionExist ? '&' : '?'}det_prob_threshold=${uniqueOptions['det_prob_threshold']}`
             }
 
-            // check whether prediction_count passed and is it allowed for particular endpoint
+            // check prediction_count passed and is it allowed for particular endpoint
             if(uniqueOptions['prediction_count'] >= 0 && required_parameters['prediction_count']){
-                url = `${url}&prediction_count=${uniqueOptions['prediction_count']}`
+                url = `${url}${isLimitOptionExist ? '&' : '?'}prediction_count=${uniqueOptions['prediction_count']}`
             }
 
-            // check whether face_plugins passed and is it allowed for particular endpoint
+            // check face_plugins passed and is it allowed for particular endpoint
             if(uniqueOptions['face_plugins'] && required_parameters['face_plugins']){
-                url = `${url}&face_plugins=${uniqueOptions['face_plugins']}`
+                url = `${url}${isLimitOptionExist ? '&' : '?'}face_plugins=${uniqueOptions['face_plugins']}`
             }
 
-            // check whether status passed and is it allowed for particular endpoint
+            // check status passed and is it allowed for particular endpoint
             if(uniqueOptions['status'] && required_parameters['status']){
-                url = `${url}&status=${uniqueOptions['status']}`
+                url = `${url}${isLimitOptionExist ? '&' : '?'}status=${uniqueOptions['status']}`
             }
         }
 
