@@ -14,8 +14,8 @@
  * permissions and limitations under the License.
  */
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
-import { common_endpoints } from '../endpoints/common_endpoints.js';
 import { common_functions } from '../functions/index.js';
+import { upload } from '../endpoints/upload.js';
 
 class RecognitionService {
     constructor(server, port, options, key){
@@ -34,8 +34,6 @@ class RecognitionService {
      */
     recognize(image_path, options){
         const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
-        const { upload_blob, upload_path, upload_url } = common_endpoints;
-        // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
         // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
         let required_url_parameters = {
             limit: true, 
@@ -49,35 +47,14 @@ class RecognitionService {
         let full_url = get_full_url(this.recognize_base_url, this.server, this.port)
         let url = add_options_to_url(full_url, this.options, options, required_url_parameters);
 
-        // regex to check passed parameter is url or relative path
-        let validUrl = isUrl(image_path)
-
         return new Promise((resolve, reject) => {
-            if(validUrl){
-                upload_url(image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }else if(isPathRelative(image_path)){
-                upload_path(image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }else {
-                upload_blob(image_path, url, this.key)
-                    .then(response => {
-                        resolve(response.data)
-                    })
-                    .catch(error => {
-                        reject(error)
-                    })
-            }
+            upload(image_path, url, this.key)
+                .then(response => {
+                    resolve(response)
+                })
+                .catch(error => {
+                    reject(error)
+                })  
             
         })  
     }
@@ -88,7 +65,6 @@ class RecognitionService {
      */
     getFaceCollection(){
         const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
-        const { upload_blob, upload_path, upload_url } = common_endpoints;
 
         let url = get_full_url(this.base_url, this.server, this.port)
         let key = this.key;
@@ -118,45 +94,21 @@ class RecognitionService {
              * @returns {Promise} 
              */
             add(image_path, subject, options){
-                // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
                 // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
                 let required_url_parameters = { det_prob_threshold: true };
-
-                // regex to check passed parameter is url or relative path
-                let validUrl = isUrl(image_path)
                 
                 // add parameters to basic url
                 url = `${url}?subject=${subject}`
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
 
                 return new Promise((resolve, reject) => {
-                    if(validUrl){
-                        upload_url(image_path, url, key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                    }else if(isPathRelative(image_path)){
-                        upload_path(image_path, url, key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                        
-                    }else {
-                        upload_blob(image_path, url, key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                    }
-                    
+                    upload(image_path, url, key)
+                        .then(response => {
+                            resolve(response)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })    
                 })            
             },
 
@@ -167,7 +119,6 @@ class RecognitionService {
              * @returns {Promise}
              */
             verify(image_path, image_id, options){
-                // add extra parameter(s) name with true value if it is referenced in API documentation for particular endpoint
                 // add_options_to_url() adds this parameter to url if user passes some value as option otherwise function ignores this parameter
                 let required_url_parameters = { 
                     limit: true,
@@ -178,36 +129,15 @@ class RecognitionService {
                 // add parameters to basic url
                 url = `${url}/${image_id}/verify`;
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
-
-                // regex to check passed parameter is url or relative path
-                let validUrl = isUrl(image_path)
                
                 return new Promise((resolve, reject) => {
-                    if(validUrl){
-                        upload_url(image_path, url, key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                    }else if(isPathRelative(image_path)){
-                        upload_path(image_path, url, key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                    }else {
-                        upload_blob(image_path, url, this.key)
-                            .then(response => {
-                                resolve(response.data)
-                            })
-                            .catch(error => {
-                                reject(error)
-                            })
-                    }
+                    upload(image_path, url, key)
+                        .then(response => {
+                            resolve(response)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })  
                 })   
             },
 
