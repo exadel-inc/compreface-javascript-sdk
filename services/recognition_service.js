@@ -46,7 +46,7 @@ class RecognitionService {
         // add parameters to basic url
         let full_url = get_full_url(this.recognize_base_url, this.server, this.port)
         let url = add_options_to_url(full_url, this.options, options, required_url_parameters);
-        console.log("mine url:", url)
+      
         return new Promise((resolve, reject) => {
             upload(image_path, url, this.key)
                 .then(response => {
@@ -64,7 +64,7 @@ class RecognitionService {
      * @returns {Object}
      */
     getFaceCollection(){
-        const{ get_full_url, add_options_to_url, isUrl, isPathRelative } = common_functions;
+        const{ get_full_url, add_options_to_url } = common_functions;
 
         let url = get_full_url(this.base_url, this.server, this.port)
         let key = this.key;
@@ -98,7 +98,7 @@ class RecognitionService {
                 let required_url_parameters = { det_prob_threshold: true };
                 
                 // add parameters to basic url
-                let url = get_full_url(this.base_url, this.server, this.port)
+                let url = get_full_url(that.base_url, that.server, that.port)
                 url = `${url}?subject=${subject}`
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
 
