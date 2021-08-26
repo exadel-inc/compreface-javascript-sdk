@@ -263,6 +263,36 @@ const verification_endpoints = {
         })
     },
 
+    /**
+     * Verify face(s) from given base64
+     * @param {String} source_image_path 
+     * @param {String} target_image_path 
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+    base64_request(source_image_path, target_image_path, url, api_key ){
+        let data = {
+            source_image: source_image_path,
+            target_image: target_image_path
+        }
+
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post( url, JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "x-api-key": api_key
+                    },
+                })
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
 
 }
 
