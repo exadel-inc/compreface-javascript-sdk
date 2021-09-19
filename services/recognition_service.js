@@ -15,6 +15,7 @@
  */
 import { recognition_endpoints } from '../endpoints/recognition_endpoints.js';
 import { common_functions } from '../functions/index.js';
+import { subject_endpoints } from '../endpoints/subject_endpoints.js';
 import { upload } from '../endpoints/upload.js';
 
 class RecognitionService {
@@ -54,7 +55,7 @@ class RecognitionService {
                 })
                 .catch(error => {
                     reject(error)
-                })  
+                })
             
         })  
     }
@@ -98,6 +99,7 @@ class RecognitionService {
                 let required_url_parameters = { det_prob_threshold: true };
                 
                 // add parameters to basic url
+                let url = get_full_url(that.base_url, that.server, that.port)
                 url = `${url}?subject=${subject}`
                 url = add_options_to_url(url, that.options, options, required_url_parameters);
 
@@ -108,7 +110,7 @@ class RecognitionService {
                         })
                         .catch(error => {
                             reject(error)
-                        })    
+                        })
                 })            
             },
 
@@ -137,7 +139,7 @@ class RecognitionService {
                         })
                         .catch(error => {
                             reject(error)
-                        })  
+                        })
                 })   
             },
 
@@ -197,6 +199,106 @@ class RecognitionService {
         }
 
         return faceCollectionFunctions;
+    }
+
+    getSubjects(){
+        const { get_full_url } = common_functions;
+        const { list, add, rename, deleteSubject } = subject_endpoints;
+
+        let base_subject_url = this.base_url.replace('faces', 'subjects');
+        let url = get_full_url(base_subject_url, this.server, this.port)
+        let key = this.key;
+
+        const subjectFunctions = {
+            /**
+             * List the subjects
+             * @returns {Promise}
+             */
+            list(){
+                return new Promise((resolve, reject) => {
+                    list(url, key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
+            },
+
+            /**
+             * Add subject
+             * @param {String} subject
+             * @returns {Promise}
+             */
+            add(subject){
+                return new Promise((resolve, reject) => {
+                    add(subject, url, key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
+            },
+
+            /**
+             * Rename the subject
+             * @param {String} presentSubjectName
+             * @param {String} newSubjectName
+             * @returns {Promise}
+             */
+            rename(presentSubjectName, newSubjectName ){
+                url = `${url}/${presentSubjectName}`
+                return new Promise((resolve, reject) => {
+                    rename(newSubjectName, url, key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
+            },
+
+            /**
+             * Delete a subject
+             * @param {String} subject
+             * @returns {Promise}
+             */
+            delete(subject){
+                url = `${url}/${subject}`
+                return new Promise((resolve, reject) => {
+                    deleteSubject(url, key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
+            },
+
+            /**
+             * Delete all subject
+             * @param {String} subject
+             * @returns {Promise}
+             */
+            deleteAll(){
+                return new Promise((resolve, reject) => {
+                    deleteSubject(url, key)
+                        .then(response => {
+                            resolve(response.data)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
+            },
+        }
+
+        return subjectFunctions;
     }
 }
 

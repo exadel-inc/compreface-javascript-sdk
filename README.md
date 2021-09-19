@@ -2,53 +2,71 @@
 
 CompreFace JavaScript SDK makes face recognition into your application even easier.
 
-## Table of content
+# Table of content
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-    - [Initialization](#initialization)
-    - [Adding faces into a face collection](#adding-faces-into-a-face-collection)
-    - [Recognition](#recognition)
-    - [Environments](#environments)
-    - [Webcam demo](#webcam-demo)
+  - [Initialization](#initialization)
+  - [Adding faces into a face collection](#adding-faces-into-a-face-collection)
+  - [Recognition](#recognition)
+  - [Environments](#environments)
+  - [Webcam demo](#webcam-demo)
 - [Reference](#reference)
-    - [CompreFace Global Object](#compreface-global-object)
-    - [Recognition Service](#recognition-service)
-        - [Recognize Faces from a Given Image](#recognize-faces-from-a-given-image)
-        - [Get Face Collection](#get-face-collection)
-    - [Face Collection Object](#face-collection-object)
-        - [Add an Example of a Subject](#add-an-example-of-a-subject)
-        - [List of All Saved Subjects](#list-of-all-saved-subjects)
-        - [Delete All Examples of the Subject by Name](#delete-all-examples-of-the-subject-by-name)
-        - [Delete an Example of the Subject by ID](#delete-an-example-of-the-subject-by-id)
-        - [Verify Faces from a Given Image](#verify-faces-from-a-given-image)
-    - [Detection Service](#detection-service)
-        - [Detect](#detect)
-    - [Verification Service](#verification-service)
-        - [Verify](#verify)
+  - [CompreFace Global Object](#compreface-global-object)
+    - [Methods](#methods)
+  - [Recognition Service](#recognition-service)
+    - [Recognize Faces from a Given Image](#recognize-faces-from-a-given-image)
+    - [Get Face Collection](#get-face-collection)
+      - [Add an Example of a Subject](#add-an-example-of-a-subject)
+      - [List of All Saved Examples of the Subject](#list-of-all-saved-examples-of-the-subject)
+      - [Delete All Examples of the Subject by Name](#delete-all-examples-of-the-subject-by-name)
+      - [Delete an Example of the Subject by ID](#delete-an-example-of-the-subject-by-id)
+      - [Verify Faces from a Given Image](#verify-faces-from-a-given-image)
+    - [Get Subjects](#get-subjects)
+      - [Add a Subject](#add-a-subject)
+      - [List Subjects](#list-subjects)
+      - [Rename a Subject](#rename-a-subject)
+      - [Delete a Subject](#delete-a-subject)
+      - [Delete All Subjects](#delete-all-subjects)
+  - [Face Detection Service](#face-detection-service)
+    - [Detect](#detect)
+  - [Face Verification Service](#face-verification-service)
+    - [Verify](#verify)
+- [Contributing](#contributing)
+  - [Report Bugs](#report-bugs)
+  - [Submit Feedback](#submit-feedback)
+- [License info](#license-info)
 
-## Requirements
+# Requirements
 
 Before using our SDK make sure you have installed CompreFace and Nodejs on your machine.
 1. [CompreFace](https://github.com/exadel-inc/CompreFace#getting-started-with-compreface) (See below compatibility matrix)
 2. [Nodejs](https://nodejs.org/en/) (Version 10+)
 
-### CompreFace compatibility matrix
+## CompreFace compatibility matrix
 
-| CompreFace JS SDK version | CompreFace 0.4.x | CompreFace 0.5.x |
-| --------------------------| ---------------- | ---------------- | 
-| 0.4.1                     | ✔                | ✘                | 
-| 0.5.x                     | ✘                | ✔                | 
+| CompreFace JS SDK version | CompreFace 0.4.x | CompreFace 0.5.x | CompreFace 0.6.x |
+| --------------------------| ---------------- | ---------------- | ---------------- | 
+| 0.4.1                     | ✔                | ✘                | ✘                |
+| 0.5.x                     | ✘                | ✔                | :yellow_circle:               |
+| 0.6.x                     | ✘                | :yellow_circle:               | ✔                |
 
-## Installation
+Explanation:
+
+* ✔  SDK supports all functionality from CompreFace.
+* :yellow_circle:  SDK works with this CompreFace version.
+  In case if CompreFace version is newer - SDK won't support new features of CompreFace. In case if CompreFace version is older - new SDK features will fail.
+* ✘ There are major backward compatibility issues. It is not recommended to use these versions together
+
+# Installation
 To add CompreFace JS SDK to your project, run the following command in the project folder:
 
 ```npm i @exadel/compreface-js-sdk```
 
 
-## Usage
+# Usage
 
-### Initialization
+## Initialization
 
 To start using JavaScript SDK you need to import `CompreFace` object from 'compreface-js-sdk' dependency.  
 
@@ -69,9 +87,10 @@ let port = 8000;
 let compreFace = new CompreFace(url, port); // set CompreFace url and port 
 let recognitionService = compreFace.initFaceRecognitionService(api_key); // initialize service
 let faceCollection = recognitionService.getFaceCollection(); // use face collection to fill it with known faces
+let subjects = recognitionService.getSubjects(); // use subjects object to work with subjects directely
 ```
 
-### Adding faces into a face collection
+## Adding faces into a face collection
 
 Here is JavaScript code example that shows how to add an image to your face collection from your file system:
 
@@ -88,7 +107,7 @@ faceCollection.add(path_to_image, name)
     })
 ```
 
-### Recognition
+## Recognition
 
 This code snippet shows how to recognize unknown face:
 
@@ -104,7 +123,7 @@ recognitionService.recognize(path_to_image)
     })
 ```
 
-### Environments
+## Environments
 NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and relative path (from local machine).
 
 | Enviroments | from URL | with Blob format | from local machine|
@@ -112,12 +131,12 @@ NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and re
 | Browser     |    ✔     |  ✔              |  ✘                | 
 | Nodejs      |    ✔     |  ✔              |  ✔                | 
 
-### Webcam demo
+## Webcam demo
 [Documentation is here](/webcam_demo)
 
-## Reference
+# Reference
 
-### CompreFace Global Object
+## CompreFace Global Object
 
 Global CompreFace Object is used for initializing connection to CompreFace and setting default values for options.
 Default values will be used in every service method if applicable. 
@@ -159,7 +178,7 @@ let options = {
 let compreFace = new CompreFace(server, port, options);
 ```
 
-**Methods:**
+### Methods
 
 1. ```compreFace.initFaceRecognitionService(api_key)```
 
@@ -203,7 +222,7 @@ Example:
 let verificationService = compreFace.initFaceVerificationService(api_key);
 ```
 
-### Recognition Service
+## Recognition Service
 
 Face recognition service is used for face identification. 
 This means that you first need to upload known faces to face collection and then recognize unknown faces among them. 
@@ -211,9 +230,7 @@ When you upload an unknown face, the service returns the most similar faces to i
 Also, face recognition service supports verify endpoint to check if this person from face collection is the correct one.
 For more information, see [CompreFace page](https://github.com/exadel-inc/CompreFace).
 
-**Methods:**
-
-#### Recognize Faces from a Given Image
+### Recognize Faces from a Given Image
 
 ```recognitionService.recognize(image_location, options)```
 
@@ -240,8 +257,19 @@ Response:
  ```json
 {
   "result" : [ {
-    "age" : [ 25, 32 ],
-    "gender" : "female",
+    "age" : {
+      "probability": 0.9308982491493225,
+      "high": 32,
+      "low": 25
+    },
+    "gender" : {
+      "probability": 0.9898611307144165,
+      "value": "female"
+    },
+    "mask" : {
+      "probability": 0.9999470710754395,
+      "value": "without_mask"
+    },
     "embedding" : [ 9.424854069948196E-4, "...", -0.011415496468544006 ],
     "box" : {
       "probability" : 1.0,
@@ -259,22 +287,25 @@ Response:
       "age" : 28.0,
       "gender" : 26.0,
       "detector" : 117.0,
-      "calculator" : 45.0
+      "calculator" : 45.0,
+      "mask": 36.0
     }
   } ],
   "plugins_versions" : {
     "age" : "agegender.AgeDetector",
     "gender" : "agegender.GenderDetector",
     "detector" : "facenet.FaceDetector",
-    "calculator" : "facenet.Calculator"
+    "calculator" : "facenet.Calculator",
+    "mask": "facemask.MaskDetector"
   }
 }
   ```
 
 | Element                        | Type    | Description                                                  |
 | ------------------------------ | ------- | ------------------------------------------------------------ |
-| age                            | array   | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | string  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
 | embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
 | box                            | object  | list of parameters of the bounding box for this face         |
 | probability                    | float   | probability that a found face is actually a face             |
@@ -307,16 +338,17 @@ recognitionService.recognize(image_location, options)
     })
 ```
 
-#### Get Face Collection
+### Get Face Collection
 
 ```recognitionService.getFaceCollection()```
 
 Returns Face collection object
 
-### Face Collection Object
-
 Face collection could be used to manage known faces, e.g. add, list, or delete them.
+
 Face recognition is performed for the saved known faces in face collection, so before using the `recognize` method you need to save at least one face into the face collection.
+
+More information about face collection and managing examples [here](https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#managing-subject-examples)
 
 **Methods:**
 
@@ -370,7 +402,7 @@ faceCollection.add(image_location, name, options)
     })
 ```
 
-#### List of All Saved Subjects
+#### List of All Saved Examples of the Subject
 
 ```faceCollection.list()```
 
@@ -403,6 +435,43 @@ faceCollection.list()
     })
     .catch(error => {
         console.log(`Oops! There is problem: ${error}`)
+    })
+```
+
+#### Delete All Examples of the Subject by Name
+
+```faceCollection.delete_all_subject(subject)```
+
+Removes image(s) according to their given subject.
+
+| Argument        | Type   | Required | Notes                                     |
+| --------------- | ------ | -------- | ----------------------------------------- |
+| subject         | string | optional | Name or any other person ID. If empty deletes all images in the face collection                      |
+
+
+Response:
+
+```
+{
+    "deleted": <count>
+}
+```
+
+| Element  | Type    | Description              |
+| -------- | ------- | ------------------------ |
+| deleted  | integer | Number of deleted faces  |
+
+Example:
+
+```javascript
+let subject = "Tom";
+
+faceCollection.delete(subject)
+    .then(response => {
+        console.log(JSON.stringify(response));
+    })
+    .catch(error => {
+        console.log(`Oops! There is problem ${error}`)
     })
 ```
 
@@ -444,48 +513,6 @@ faceCollection.delete(image_id)
     })
 ```
 
-#### Delete All Examples of the Subject by Name
-
-```faceCollection.delete_all_subject(subject)``` 
-
-Removes image(s) according to their given subject.
-
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| subject         | string | optional | Name or any other person ID. If empty deletes all images in the face collection                      |
-
-
-Response:
-
-```json
-[
-  {
-    "image_id": "string",
-    "subject": "string"
-  }
-]
-```
-
-| Field               | string    | Notes                                     |
-| --------------------| ------    | ----------------------------------------- |
-| image_id            | string    | ID of the deleted image |
-| subject             | string    | Name or any other person ID   |
-
-
-Example:
-
-```javascript
-let subject = "Tom";
-
-faceCollection.delete(subject)
-    .then(response => {
-        console.log(JSON.stringify(response));
-    })
-    .catch(error => {
-        console.log(`Oops! There is problem ${error}`)
-    })
-```
-
 #### Verify Faces from a Given Image
 
 ```faceCollection.verify(image_path, image_id, options)```
@@ -509,42 +536,57 @@ Supported options:
 
 Response:
 
- ```json
+```json
 {
-  "result": [
-    {
-      "age" : [ 25, 32 ],
-      "gender" : "female",
-      "embedding" : [ -0.049007344990968704, "...", -0.01753818802535534 ],
-      "box" : {
-        "probability" : 0.9997453093528748,
-        "x_max" : 205,
-        "y_max" : 167,
-        "x_min" : 48,
-        "y_min" : 0
-      },
-      "landmarks" : [ [ 260, 129 ], [ 273, 127 ], [ 258, 136 ], [ 257, 150 ], [ 269, 148 ] ],
+  "result" : [ {
+    "age" : {
+      "probability": 0.9308982491493225,
+      "high": 32,
+      "low": 25
+    },
+    "gender" : {
+      "probability": 0.9898611307144165,
+      "value": "female"
+    },
+    "mask" : {
+      "probability": 0.9999470710754395,
+      "value": "without_mask"
+    },
+    "embedding" : [ 9.424854069948196E-4, "...", -0.011415496468544006 ],
+    "box" : {
+      "probability" : 1.0,
+      "x_max" : 1420,
+      "y_max" : 1368,
+      "x_min" : 548,
+      "y_min" : 295
+    },
+    "landmarks" : [ [ 814, 713 ], [ 1104, 829 ], [ 832, 937 ], [ 704, 1030 ], [ 1017, 1133 ] ],
+    "subjects" : [ {
       "similarity" : 0.97858,
-      "execution_time" : {
-        "age" : 59.0,
-        "gender" : 30.0,
-        "detector" : 177.0,
-        "calculator" : 70.0
-      }
+      "subject" : "subject1"
+    } ],
+    "execution_time" : {
+      "age" : 28.0,
+      "gender" : 26.0,
+      "detector" : 117.0,
+      "calculator" : 45.0,
+      "mask": 36.0
     }
-  ],
+  } ],
   "plugins_versions" : {
     "age" : "agegender.AgeDetector",
     "gender" : "agegender.GenderDetector",
     "detector" : "facenet.FaceDetector",
-    "calculator" : "facenet.Calculator"
+    "calculator" : "facenet.Calculator",
+    "mask": "facemask.MaskDetector"
   }
 }
 ```
 | Element                        | Type    | Description                                                  |
 | ------------------------------ | ------- | ------------------------------------------------------------ |
-| age                            | array   | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | string  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
 | embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
 | box                            | object  | list of parameters of the bounding box for this face         |
 | probability                    | float   | probability that a found face is actually a face             |
@@ -561,7 +603,7 @@ let options = {
     limit: 0,
     det_prob_threshold: 0.8,
     prediction_count: 1,
-    face_plugins: "calculator,age,gender,landmarks",
+    face_plugins: "calculator,age,gender,landmarks,mask",
     status: "true"
 }
 
@@ -574,13 +616,178 @@ faceCollection.verify(image_location, image_id, options)
     })
 ```
 
-### Detection Service
+### Get Subjects
+
+```javascript
+recognitionService.getSubjects()
+```
+
+Returns subjects object
+
+Subjects object allows working with subjects directly (not via subject examples).
+
+More information about subjects [here](https://github.com/exadel-inc/CompreFace/blob/master/docs/Rest-API-description.md#managing-subjects)
+
+```javascript
+let subjects = recognitionService.getSubjects(); 
+```
+
+**Methods:**
+
+#### Add a Subject
+
+Create a new subject in Face Collection.
+```javascript
+subjects.add(subject)
+```
+
+| Argument           | Type   | Required | Notes                                                                   |
+| ------------------ | ------ | -------- | ------------------------------------------------------------------------|
+| subject            | string | required | is the name of the subject. It can be any string                        |
+
+Response:
+
+```json
+{
+  "subject": "subject1"
+}
+```
+
+| Element  | Type   | Description                |
+| -------- | ------ | -------------------------- |
+| subject  | string | is the name of the subject |
+
+```javascript
+let subjects = recognitionService.getSubjects();
+subjects.add("John");
+```
+
+#### List Subjects
+
+Returns all subject related to Face Collection.
+```javascript
+subjects.list()
+```
+
+Response:
+
+```json
+{
+  "subjects": [
+    "<subject_name1>",
+    "<subject_name2>"
+  ]
+}
+```
+
+| Element  | Type   | Description                |
+| -------- | ------ | -------------------------- |
+| subjects | array  | the list of subjects in Face Collection |
+
+```javascript
+let subjects = recognitionService.getSubjects();
+console.log(subjects.list());
+```
+
+#### Rename a Subject
+
+Rename existing subject. If a new subject name already exists, subjects are merged - all faces from the old subject name are reassigned to the subject with the new name, old subject removed.
+
+```javascript
+subjects.rename(subject, new_name)
+```
+
+| Argument            | Type   | Required | Notes                                                                   |
+| ------------------  | ------ | -------- | ------------------------------------------------------------------------|
+| subject             | string | required | is the name of the subject that will be updated                         |
+| new_name            | string | required | is the name of the subject. It can be any string                        |
+
+Response:
+
+```json
+{
+  "updated": "true|false"
+}
+```
+
+| Element  | Type    | Description                |
+| -------- | ------  | -------------------------- |
+| updated  | boolean | failed or success          |
+
+```javascript
+let subjects = recognitionService.getSubjects();
+subjects.add("John");
+console.log(subjects.list());
+subjects.rename("John", "Jane");
+console.log(subjects.list());
+```
+
+#### Delete a Subject
+
+Delete existing subject and all saved faces.
+```javascript
+subjects.delete(subject)
+```
+
+| Argument           | Type   | Required | Notes                                                                   |
+| ------------------ | ------ | -------- | ------------------------------------------------------------------------|
+| subject            | string | required | is the name of the subject.                                             |
+
+Response:
+
+```json
+{
+  "subject": "subject1"
+}
+```
+
+| Element  | Type   | Description                |
+| -------- | ------ | -------------------------- |
+| subject  | string | is the name of the subject |
+
+```javascript
+let subjects = recognitionService.getSubjects();
+subjects.add("John");
+console.log(subjects.list());
+subjects.delete("John");
+console.log(subjects.list());
+```
+
+#### Delete All Subjects
+
+Delete all existing subjects and all saved faces.
+```javascript
+subjects.deleteAll()
+```
+
+Response:
+
+```json
+{
+  "deleted": "<count>"
+}
+```
+
+| Element  | Type    | Description                |
+| -------- | ------  | -------------------------- |
+| deleted  | integer | number of deleted subjects |
+
+```javascript
+let subjects = recognitionService.getSubjects();
+subjects.add("John");
+subjects.add("Jane");
+console.log(subjects.list());
+subjects.deleteAll();
+console.log(subjects.list());
+```
+
+## Face Detection Service
 
 Face detection service is used for detecting faces in the image.
 
 **Methods:**
 
-#### Detect
+### Detect
 
 ```detectionService.detect(image_location, options)```
 
@@ -605,8 +812,19 @@ Response:
 ```json
 {
   "result" : [ {
-    "age" : [ 25, 32 ],
-    "gender" : "female",
+    "age" : {
+      "probability": 0.9308982491493225,
+      "high": 32,
+      "low": 25
+    },
+    "gender" : {
+      "probability": 0.9898611307144165,
+      "value": "female"
+    },
+    "mask" : {
+      "probability": 0.9999470710754395,
+      "value": "without_mask"
+    },
     "embedding" : [ -0.03027934394776821, "...", -0.05117142200469971 ],
     "box" : {
       "probability" : 0.9987509250640869,
@@ -620,22 +838,25 @@ Response:
       "age" : 30.0,
       "gender" : 26.0,
       "detector" : 130.0,
-      "calculator" : 49.0
+      "calculator" : 49.0,
+      "mask": 36.0
     }
   } ],
   "plugins_versions" : {
     "age" : "agegender.AgeDetector",
     "gender" : "agegender.GenderDetector",
     "detector" : "facenet.FaceDetector",
-    "calculator" : "facenet.Calculator"
+    "calculator" : "facenet.Calculator",
+    "mask": "facemask.MaskDetector"
   }
 }
 ```
 
 | Element                        | Type    | Description                                                  |
 | ------------------------------ | ------- | ------------------------------------------------------------ |
-| age                            | array   | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | string  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
 | embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
 | box                            | object  | list of parameters of the bounding box for this face (on processedImage) |
 | probability                    | float   | probability that a found face is actually a face (on processedImage)     |
@@ -664,14 +885,14 @@ detectionService.detect(image_location, options)
     })
 ```
 
-### Verification Service
+## Face Verification Service
 
 Face verification service is used for comparing two images.
 A source image should contain only one face which will be compared to all faces on the target image.
 
 **Methods:**
 
-#### Verify
+### Verify
 
 ```verificationService.verify(source_image_location, target_image_location, options)```
 
@@ -696,52 +917,79 @@ Supported options:
 Response:
 ```json
 {
-  "source_image_face" : {
-    "age" : [ 25, 32 ],
-    "gender" : "female",
-    "embedding" : [ -0.0010271212086081505, "...", -0.008746841922402382 ],
-    "box" : {
-      "probability" : 0.9997453093528748,
-      "x_max" : 205,
-      "y_max" : 167,
-      "x_min" : 48,
-      "y_min" : 0
-    },
-    "landmarks" : [ [ 92, 44 ], [ 130, 68 ], [ 71, 76 ], [ 60, 104 ], [ 95, 125 ] ],
-    "execution_time" : {
-      "age" : 85.0,
-      "gender" : 51.0,
-      "detector" : 67.0,
-      "calculator" : 116.0
-    }
-  },
-  "face_matches": [
-    {
-      "age" : [ 25, 32 ],
-      "gender" : "female",
-      "embedding" : [ -0.049007344990968704, "...", -0.01753818802535534 ],
-      "box" : {
-        "probability" : 0.99975,
-        "x_max" : 308,
-        "y_max" : 180,
-        "x_min" : 235,
-        "y_min" : 98
+  "result" : [{
+    "source_image_face" : {
+      "age" : {
+        "probability": 0.9308982491493225,
+        "high": 32,
+        "low": 25
       },
-      "landmarks" : [ [ 260, 129 ], [ 273, 127 ], [ 258, 136 ], [ 257, 150 ], [ 269, 148 ] ],
-      "similarity" : 0.97858,
+      "gender" : {
+        "probability": 0.9898611307144165,
+        "value": "female"
+      },
+      "mask" : {
+        "probability": 0.9999470710754395,
+        "value": "without_mask"
+      },
+      "embedding" : [ -0.0010271212086081505, "...", -0.008746841922402382 ],
+      "box" : {
+        "probability" : 0.9997453093528748,
+        "x_max" : 205,
+        "y_max" : 167,
+        "x_min" : 48,
+        "y_min" : 0
+      },
+      "landmarks" : [ [ 92, 44 ], [ 130, 68 ], [ 71, 76 ], [ 60, 104 ], [ 95, 125 ] ],
       "execution_time" : {
-        "age" : 59.0,
-        "gender" : 30.0,
-        "detector" : 177.0,
-        "calculator" : 70.0
+        "age" : 85.0,
+        "gender" : 51.0,
+        "detector" : 67.0,
+        "calculator" : 116.0,
+        "mask": 36.0
       }
-    }],
-  "plugins_versions" : {
-    "age" : "agegender.AgeDetector",
-    "gender" : "agegender.GenderDetector",
-    "detector" : "facenet.FaceDetector",
-    "calculator" : "facenet.Calculator"
-  }
+    },
+    "face_matches": [
+      {
+        "age" : {
+          "probability": 0.9308982491493225,
+          "high": 32,
+          "low": 25
+        },
+        "gender" : {
+          "probability": 0.9898611307144165,
+          "value": "female"
+        },
+        "mask" : {
+          "probability": 0.9999470710754395,
+          "value": "without_mask"
+        },
+        "embedding" : [ -0.049007344990968704, "...", -0.01753818802535534 ],
+        "box" : {
+          "probability" : 0.99975,
+          "x_max" : 308,
+          "y_max" : 180,
+          "x_min" : 235,
+          "y_min" : 98
+        },
+        "landmarks" : [ [ 260, 129 ], [ 273, 127 ], [ 258, 136 ], [ 257, 150 ], [ 269, 148 ] ],
+        "similarity" : 0.97858,
+        "execution_time" : {
+          "age" : 59.0,
+          "gender" : 30.0,
+          "detector" : 177.0,
+          "calculator" : 70.0,
+          "mask": 36.0
+        }
+      }],
+    "plugins_versions" : {
+      "age" : "agegender.AgeDetector",
+      "gender" : "agegender.GenderDetector",
+      "detector" : "facenet.FaceDetector",
+      "calculator" : "facenet.Calculator",
+      "mask": "facemask.MaskDetector"
+    }
+  }]
 }
 ```
 
@@ -749,8 +997,9 @@ Response:
 | ------------------------------ | ------- | ------------------------------------------------------------ |
 | source_image_face              | object  | additional info about source image face |
 | face_matches                   | array   | result of face verification |
-| age                            | array   | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | string  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
+| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
 | embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
 | box                            | object  | list of parameters of the bounding box for this face         |
 | probability                    | float   | probability that a found face is actually a face             |
@@ -793,7 +1042,7 @@ Contributions are what make the open source community such an amazing place to b
 
 After creating your first contributing pull request, you will receive a request to sign our Contributor License Agreement by commenting your pull request with a special message.
 
-### Report Bugs
+## Report Bugs
 
 Please report any bugs [here](https://github.com/exadel-inc/compreface-javascript-sdk/issues).
 
@@ -804,7 +1053,7 @@ If you are reporting a bug, please specify:
 - Detailed steps to reproduce the bug
 
 
-### Submit Feedback
+## Submit Feedback
 
 The best way to send us feedback is to file an issue at https://github.com/exadel-inc/compreface-javascript-sdk/issues.
 
