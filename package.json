@@ -1,6 +1,6 @@
 {
   "name": "@exadel/compreface-js-sdk",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "license": "Apache-2.0",
   "description": "JavaScript SDK for CompreFace - free and open-source face recognition system from Exadel",
   "main": "index.js",
@@ -18,6 +18,9 @@
     "Face Detection",
     "Face Verification",
     "Face Identification",
+    "Age Recognition",
+    "Gender Recognition",
+    "Mask Detection",
     "Computer Vision",
     "SDK"
   ],

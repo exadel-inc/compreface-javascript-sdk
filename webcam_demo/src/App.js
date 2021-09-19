@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { CompreFace } from 'compreface-javascript-sdk';
+import { CompreFace } from '@exadel/compreface-js-sdk';
 import './App.css';
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
     canvasElement.lineWidth = 5;
     
     canvasElement.strokeRect(box.x_min, box.y_min, box.x_max - box.x_min, box.y_max - box.y_min);
-    extraCanvas.fillText( Number.parseFloat(box.probability).toPrecision(5) + '  ' + faceData.result[0].gender + '  ' + faceData.result[0].age[0] + '-' + faceData.result[0].age[1], box.x_min, box.y_min - 10)
+    extraCanvas.fillText( Number.parseFloat(box.probability).toPrecision(5) + '  ' + faceData.result[0].gender.value + '  ' + faceData.result[0].age.low + '-' + faceData.result[0].age.high, box.x_min, box.y_min - 10)
 
   }
   
