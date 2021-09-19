@@ -1,4 +1,4 @@
-import { CompreFace } from 'compreface-sdk';
+import { CompreFace } from '@exadel/compreface-js-sdk';
 import './custom.css';
 import { useState, useRef } from 'react';
 import { Container, Row, Form, Col, Button, ProgressBar, Spinner } from 'react-bootstrap';
