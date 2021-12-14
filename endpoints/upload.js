@@ -8,7 +8,7 @@ const upload = (image_data, url, api_key) => {
     let imageFromUrl = isUrl(image_data),
         imageFromPath = isPathRelative(image_data),
         imageFromBase64 = isBase64(image_data);
-        
+
         return new Promise((resolve, reject) => {
             if(imageFromUrl){
                 upload_url(image_data, url, api_key)
@@ -18,16 +18,16 @@ const upload = (image_data, url, api_key) => {
                     .catch(error => {
                         reject(error)
                     })
-            }else if(imageFromPath){
-                upload_path(image_data, url, api_key)
+            }else if(imageFromBase64){
+                upload_base64(image_data, url, api_key)
                     .then(response => {
                         resolve(response.data)
                     })
                     .catch(error => {
                         reject(error)
                     })
-            }else if(imageFromBase64){
-                upload_base64(image_data, url, api_key)
+            }else if(imageFromPath){
+                upload_path(image_data, url, api_key)
                     .then(response => {
                         resolve(response.data)
                     })
