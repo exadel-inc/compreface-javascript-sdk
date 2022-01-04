@@ -55,10 +55,10 @@ const common_functions = {
      * @returns
      */
     isPathRelative(path) {
-        if(typeof path !== 'string') return false
-        let isAbsolute = /^([a-zA-Z]\:|\\\\[^\/\\:*?"<>|]+\\[^\/\\:*?"<>|]+)(\\[^\/\\:*?"<>|]+)+(\.[^\/\\:*?"<>|]+)$/.test(path);
+        if(typeof path !== 'string') return false;
+        let isAbsolute = /^([A-Za-z]:|\.)/.test(path);
 
-        return !isAbsolute;
+        return isAbsolute;
     },
 
      /**
