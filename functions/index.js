@@ -26,7 +26,7 @@ const common_functions = {
 
     /**
      * Check url
-     * @param {String} image_url 
+     * @param {String} image_url
      * @returns {Boolean}
      */
     isUrl(image_url){
@@ -39,8 +39,8 @@ const common_functions = {
 
     /**
      * Check whether string is base64
-     * @param {String} path 
-     * @returns 
+     * @param {String} path
+     * @returns
      */
     isBase64(image_data){
         let base64regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
@@ -51,21 +51,21 @@ const common_functions = {
 
     /**
      * Check whether string is relative path or not
-     * @param {String} path 
-     * @returns 
+     * @param {String} path
+     * @returns
      */
     isPathRelative(path) {
-        if(typeof path !== 'string') return false 
-        let isAbsolute = /^(?:\/|[a-z]+:\/\/)/.test(path);
+        if(typeof path !== 'string') return false;
+        let isAbsolute = /^([A-Za-z]:|\.)/.test(path);
 
-        return !isAbsolute;
+        return isAbsolute;
     },
 
      /**
      * Add extra options to url
      * @param {String} url
      * @param {Object} globalOptions
-     * @param {Object} localOptions 
+     * @param {Object} localOptions
      * @param {Object} required_parameters
      * @returns {String}
      */
@@ -74,7 +74,7 @@ const common_functions = {
         let uniqueOptions = {...localOptions, ...globalOptions};
         let isThereAnyOptions = Object.keys(uniqueOptions);
         let isLimitOptionExist = false;
-        
+
         // check whether any parameters passed
         if(isThereAnyOptions.length > 0){
             // check limit parameter passed and it is allowed for particular endpoint (ex: it is not requrid for add())
