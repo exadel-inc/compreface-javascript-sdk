@@ -5,6 +5,7 @@
   "description": "JavaScript SDK for CompreFace - free and open-source face recognition system from Exadel",
   "main": "index.js",
   "type": "module",
+  "types":"compreface.d.ts",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
