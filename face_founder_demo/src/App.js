@@ -1,7 +1,7 @@
 import { CompreFace } from '@exadel/compreface-js-sdk';
 import './custom.css';
-import { useState, useRef } from 'react';
-import { Container, Row, Form, Col, Button, ProgressBar, Spinner } from 'react-bootstrap';
+import { useState, useRef, useEffect } from 'react';
+import { Container, Row, Form, Col, ProgressBar, Spinner } from 'react-bootstrap';
 import UploadedImage from './components/UploadedImge';
 import DisplayFoundImages from './components/DisplayFoundImages';
 import DisplayCropedImage from './components/DisplayCropedImages';
@@ -80,7 +80,7 @@ function App() {
         setUploadedImage( myEvent.target.result )
         let sendata = myEvent.target.result.split(',')[1];
 
-        recognitionService.recognize(sendata, { limit: 10, prediction_count: 100, face_plugins: "age,gender"})
+        recognitionService.recognize(sendata, { prediction_count: 100, face_plugins: "age,gender"})
           .then(res => {
             setLoading(false)
             setFullData(res.result[0].subjects);

@@ -1,12 +1,31 @@
+declare interface Options {
+    limit: number,
+    prediction_count?: number,
+    face_plugins?: string,
+    det_prob_threshold?: number,
+    status?: boolean
+}
+declare interface FaceCollectionAddOptions {
+    det_prob_threshold: string
+}
+
+declare interface ServiceOptions{
+    limit: number,
+    face_plugins?: string,
+    det_prob_threshold?: number,
+    status?: boolean
+}
+
 declare interface Detection {
-    detect<T>(image_path: string, localOptions?: any): Promise<T>;
+    detect<T>(image_path: string, localOptions?: ServiceOptions): Promise<T>;
 }
 
 declare interface Verification {
-    verify<T>(source_image_path: string, target_image_path: string, options?: any): Promise<T>
+    verify<T>(source_image_path: string, target_image_path: string, options: ServiceOptions): Promise<T>
 }
 
 declare interface Recognition {
+    recognize<T>(image_path: string, options: Options): Promise<T>;
     getFaceCollection(): FaceCollectionFunctions;
     subjectFunctions(): SubjectFunctions;
 }
@@ -24,7 +43,7 @@ declare interface FaceCollectionFunctions {
      * @param {String} subject 
      * @returns {Promise} 
      */
-    add<T>(image_path: string, subject: string, options?: any): Promise<T>;
+    add<T>(image_path: string, subject: string, options?: FaceCollectionAddOptions): Promise<T>;
 
     /**
      * Verify face from image
@@ -32,7 +51,7 @@ declare interface FaceCollectionFunctions {
      * @param {String} image_id 
      * @returns {Promise}
      */
-    verify<T>(image_path: string, image_id: string, options?: any): Promise<T>,
+    verify<T>(image_path: string, image_id: string, options?: Options): Promise<T>,
 
     /**
      * Delete image by id
@@ -100,7 +119,7 @@ declare interface SubjectFunctions {
 }
 
 export declare class CompreFace {
-    constructor(server: string, port: number, options?: any);
+    constructor(server: string, port: number, options?: Options);
 
     /**
      * Initialize RecognitionService instance
