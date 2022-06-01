@@ -80,7 +80,7 @@ function App() {
         setUploadedImage( myEvent.target.result )
         let sendata = myEvent.target.result.split(',')[1];
 
-        recognitionService.recognize(sendata, { prediction_count: 100, face_plugins: "age,gender"})
+        recognitionService.recognize(sendata, {limit:10, prediction_count: 100, face_plugins: "age,gender"})
           .then(res => {
             setLoading(false)
             setFullData(res.result[0].subjects);
