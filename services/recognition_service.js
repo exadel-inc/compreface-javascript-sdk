@@ -163,6 +163,25 @@ class RecognitionService {
             },
 
             /**
+			 * Delete multiple images
+			 * @param {String} subject
+			 * @returns {Promise}
+			 */
+			delete_multiple_images(image_ids) {
+				url = `${url}/delete`;
+
+				return new Promise((resolve, reject) => {
+					recognition_endpoints.delete_multiple(url, key, image_ids)
+						.then((response) => {
+							resolve(response.data);
+						})
+						.catch((error) => {
+							reject(error);
+						});
+				});
+			},
+
+            /**
              * Delete image by subject
              * @param {String} subject 
              * @returns {Promise}

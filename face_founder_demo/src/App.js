@@ -1,7 +1,7 @@
 import { CompreFace } from '@exadel/compreface-js-sdk';
 import './custom.css';
-import { useState, useRef } from 'react';
-import { Container, Row, Form, Col, Button, ProgressBar, Spinner } from 'react-bootstrap';
+import { useState, useRef, useEffect } from 'react';
+import { Container, Row, Form, Col, ProgressBar, Spinner } from 'react-bootstrap';
 import UploadedImage from './components/UploadedImge';
 import DisplayFoundImages from './components/DisplayFoundImages';
 import DisplayCropedImage from './components/DisplayCropedImages';

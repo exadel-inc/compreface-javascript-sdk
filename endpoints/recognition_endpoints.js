@@ -58,7 +58,30 @@ const recognition_endpoints = {
                 reject(error)
             }
         })
+    },
+    
+    /**
+     * Delete multiple images
+     * @param {String} url 
+     * @param {String} api_key 
+     * @returns {Promise}
+     */
+     async delete_multiple(url, api_key, image_ids){
+        return new Promise( async (resolve, reject) => {
+            try {
+                const response = await axios.post(url, image_ids, { 
+                    headers: {
+                        "x-api-key": api_key
+                    }
+                }) 
+
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
+
 } 
 
 export { recognition_endpoints };
