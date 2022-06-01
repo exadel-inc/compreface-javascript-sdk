@@ -45,7 +45,7 @@ class RecognitionService {
         };
 
 		if (!options.limit) {
-			options = { ...options, limit: 10 };
+			options = { ...options, limit: 0 };
 		}
 
         // add parameters to basic url
