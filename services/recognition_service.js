@@ -44,6 +44,10 @@ class RecognitionService {
             status: true
         };
 
+		if (!options.limit) {
+			options = { ...options, limit: 0 };
+		}
+
         // add parameters to basic url
         let full_url = get_full_url(this.recognize_base_url, this.server, this.port)
         let url = add_options_to_url(full_url, this.options, options, required_url_parameters);

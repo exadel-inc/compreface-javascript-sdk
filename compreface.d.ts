@@ -1,12 +1,47 @@
+/*
+ * Copyright (c) 2020 the original author or authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
+declare interface Options {
+    limit: number,
+    prediction_count?: number,
+    face_plugins?: string,
+    det_prob_threshold?: number,
+    status?: boolean
+}
+declare interface FaceCollectionAddOptions {
+    det_prob_threshold: string
+}
+
+declare interface ServiceOptions{
+    limit: number,
+    face_plugins?: string,
+    det_prob_threshold?: number,
+    status?: boolean
+}
+
 declare interface Detection {
-    detect<T>(image_path: string, localOptions?: any): Promise<T>;
+    detect<T>(image_path: string, localOptions?: ServiceOptions): Promise<T>;
 }
 
 declare interface Verification {
-    verify<T>(source_image_path: string, target_image_path: string, options?: any): Promise<T>
+    verify<T>(source_image_path: string, target_image_path: string, options: ServiceOptions): Promise<T>
 }
 
 declare interface Recognition {
+    recognize<T>(image_path: string, options: Options): Promise<T>;
     getFaceCollection(): FaceCollectionFunctions;
     subjectFunctions(): SubjectFunctions;
 }
@@ -24,7 +59,7 @@ declare interface FaceCollectionFunctions {
      * @param {String} subject 
      * @returns {Promise} 
      */
-    add<T>(image_path: string, subject: string, options?: any): Promise<T>;
+    add<T>(image_path: string, subject: string, options?: FaceCollectionAddOptions): Promise<T>;
 
     /**
      * Verify face from image
@@ -32,7 +67,7 @@ declare interface FaceCollectionFunctions {
      * @param {String} image_id 
      * @returns {Promise}
      */
-    verify<T>(image_path: string, image_id: string, options?: any): Promise<T>,
+    verify<T>(image_path: string, image_id: string, options?: Options): Promise<T>,
 
     /**
      * Delete image by id
@@ -100,7 +135,7 @@ declare interface SubjectFunctions {
 }
 
 export declare class CompreFace {
-    constructor(server: string, port: number, options?: any);
+    constructor(server: string, port: number, options?: Options);
 
     /**
      * Initialize RecognitionService instance
