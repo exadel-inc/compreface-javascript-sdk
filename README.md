@@ -45,11 +45,12 @@ Before using our SDK make sure you have installed CompreFace and Nodejs on your 
 
 ## CompreFace compatibility matrix
 
-| CompreFace JS SDK version | CompreFace 0.4.x | CompreFace 0.5.x | CompreFace 0.6.x |
-| --------------------------| ---------------- | ---------------- | ---------------- | 
-| 0.4.1                     | ✔                | ✘                | ✘                |
-| 0.5.x                     | ✘                | ✔                | :yellow_circle:               |
-| 0.6.x                     | ✘                | :yellow_circle:               | ✔                |
+| CompreFace JS SDK version | CompreFace 0.4.x | CompreFace 0.5.x | CompreFace 0.6.x | CompreFace 1.0.x |
+|---------------------------|------------------|------------------|------------------|------------------|
+| 0.4.1                     | ✔                | ✘                | ✘                | ✘                |
+| 0.5.x                     | ✘                | ✔                | :yellow_circle:  | :yellow_circle:  |
+| 0.6.x                     | ✘                | :yellow_circle:  | ✔                | :yellow_circle:  |
+| 1.0.x                     | ✘                | :yellow_circle:  | :yellow_circle:  | ✔                |
 
 Explanation:
 
@@ -126,10 +127,10 @@ recognitionService.recognize(path_to_image)
 ## Environments
 NOTE: We provide 3 ways of uploading image to our SDK. They are url, blob and relative path (from local machine).
 
-| Enviroments | from URL | with Blob format | from local machine|
-| ------------|--------- | ---------------- | ----------------  | 
-| Browser     |    ✔     |  ✔              |  ✘                | 
-| Nodejs      |    ✔     |  ✔              |  ✔                | 
+| Enviroments | from URL | with Blob format | from local machine |
+|-------------|----------|------------------|--------------------|
+| Browser     | ✔        | ✔                | ✘                  |
+| Nodejs      | ✔        | ✔                | ✔                  |
 
 ## Webcam demo
 [Documentation is here](/webcam_demo)
@@ -146,21 +147,21 @@ If the option’s value is set in the global object and passed as a function arg
 
 ```new CompreFace(server, port, options)```
 
-| Argument | Type   | Required | Notes                                     | 
-| ---------| ------ | -------- | ----------------------------------------- | 
+| Argument | Type   | Required | Notes                                                                  |
+|----------|--------|----------|------------------------------------------------------------------------|
 | url      | string | required | URL with protocol where CompreFace is located. E.g. `http://localhost` |
-| port     | string | required | CompreFace port. E.g. `8000` |
-| options  | object | optional | Default values for face recognition services    |
+| port     | string | required | CompreFace port. E.g. `8000`                                           |
+| options  | object | optional | Default values for face recognition services                           |
 
 Possible options:
 
-| Option              | Type    | Notes                                     |
-| --------------------| ------  | ----------------------------------------- |
-| det_prob_threshold  | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
-| limit               | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0       |
-| prediction_count    | integer | maximum number of subject predictions per face. It returns the most similar subjects. Default value: 1    |
-| face_plugins        | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md)    |
-| status              | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false    |
+| Option             | Type    | Notes                                                                                                                                                                                        |
+|--------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| det_prob_threshold | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0                                                                                          |
+| limit              | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0                                               |
+| prediction_count   | integer | maximum number of subject predictions per face. It returns the most similar subjects. Default value: 1                                                                                       |
+| face_plugins       | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md) |
+| status             | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false                                                                                    |
 
 Example:
 
@@ -184,9 +185,9 @@ let compreFace = new CompreFace(server, port, options);
 
 Inits face recognition service object.
 
-| Argument | Type   | Required | Notes                                     |
-| ---------| ------ | -------- | ----------------------------------------- |
-| api_key  | string | required | Face Recognition Api Key in UUID format    |
+| Argument | Type   | Required | Notes                                   |
+|----------|--------|----------|-----------------------------------------|
+| api_key  | string | required | Face Recognition Api Key in UUID format |
 
 Example:
 
@@ -198,9 +199,9 @@ let recognitionService = compreFace.initFaceRecognitionService(api_key);
 
 Inits face detection service object.
 
-| Argument | Type   | Required | Notes                                     |
-| ---------| ------ | -------- | ----------------------------------------- |
-| api_key  | string | required | Face Detection Api Key in UUID format    |
+| Argument | Type   | Required | Notes                                 |
+|----------|--------|----------|---------------------------------------|
+| api_key  | string | required | Face Detection Api Key in UUID format |
 
 Example:
 
@@ -212,9 +213,9 @@ let detectionService = compreFace.initFaceDetectionService(api_key);
 
 Inits face verification service object.
 
-| Argument | Type   | Required | Notes                                     |
-| ---------| ------ | -------- | ----------------------------------------- |
-| api_key  | string | required | Face Verification Api Key in UUID format    |
+| Argument | Type   | Required | Notes                                    |
+|----------|--------|----------|------------------------------------------|
+| api_key  | string | required | Face Verification Api Key in UUID format |
 
 Example:
 
@@ -237,20 +238,20 @@ For more information, see [CompreFace page](https://github.com/exadel-inc/Compre
 Recognizes all faces from the image. 
 The first argument is the image location, it could be a URL or a path on the local machine.
 
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL, image in BLOB format or image from your local machine|
-| options         | string | optional | Object that defines recognition options   |
+| Argument       | Type   | Required | Notes                                                      |
+|----------------|--------|----------|------------------------------------------------------------|
+| image_location | string | required | URL, image in BLOB format or image from your local machine |
+| options        | string | optional | Object that defines recognition options                    |
 
 Supported options:
 
-| Option              | Type    | Notes                                     |
-| --------------------| ------  | ----------------------------------------- |
-| det_prob_threshold  | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
-| limit               | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0       |
-| prediction_count    | object  | maximum number of subject predictions per face. It returns the most similar subjects. Default value: 1    |
-| face_plugins        | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md)    |
-| status              | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false    |
+| Option             | Type    | Notes                                                                                                                                                                                        |
+|--------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| det_prob_threshold | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0                                                                                          |
+| limit              | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0                                               |
+| prediction_count   | object  | maximum number of subject predictions per face. It returns the most similar subjects. Default value: 1                                                                                       |
+| face_plugins       | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md) |
+| status             | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false                                                                                    |
 
 Response:
 
@@ -301,21 +302,21 @@ Response:
 }
   ```
 
-| Element                        | Type    | Description                                                  |
-| ------------------------------ | ------- | ------------------------------------------------------------ |
-| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
-| embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| box                            | object  | list of parameters of the bounding box for this face         |
-| probability                    | float   | probability that a found face is actually a face             |
-| x_max, y_max, x_min, y_min     | integer | coordinates of the frame containing the face                 |
-| landmarks                      | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| subjects                       | list    | list of similar subjects with size of <prediction_count> order by similarity |
-| similarity                     | float   | similarity that on that image predicted person               |
-| subject                        | string  | name of the subject in Face Collection                       |
-| execution_time                 | object  | execution time of all plugins                       |
-| plugins_versions               | object  | contains information about plugin versions                       |
+| Element                    | Type    | Description                                                                                                                                                                                                           |
+|----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| age                        | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| gender                     | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| mask                       | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.                                                                  |
+| embedding                  | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                   |
+| box                        | object  | list of parameters of the bounding box for this face                                                                                                                                                                  |
+| probability                | float   | probability that a found face is actually a face                                                                                                                                                                      |
+| x_max, y_max, x_min, y_min | integer | coordinates of the frame containing the face                                                                                                                                                                          |
+| landmarks                  | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled |
+| subjects                   | list    | list of similar subjects with size of <prediction_count> order by similarity                                                                                                                                          |
+| similarity                 | float   | similarity that on that image predicted person                                                                                                                                                                        |
+| subject                    | string  | name of the subject in Face Collection                                                                                                                                                                                |
+| execution_time             | object  | execution time of all plugins                                                                                                                                                                                         |
+| plugins_versions           | object  | contains information about plugin versions                                                                                                                                                                            |
 
 Example:
 
@@ -358,17 +359,17 @@ More information about face collection and managing examples [here](https://gith
 
 Adds an image to your face collection. 
 
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL, image in BLOB format or image from your local machine |
-| subject         | string | required | Name or any other person ID. It can be just a random string you generate and save for further identification    |
-| options         | string | optional | Object that defines adding options   |
+| Argument       | Type   | Required | Notes                                                                                                        |
+|----------------|--------|----------|--------------------------------------------------------------------------------------------------------------|
+| image_location | string | required | URL, image in BLOB format or image from your local machine                                                   |
+| subject        | string | required | Name or any other person ID. It can be just a random string you generate and save for further identification |
+| options        | string | optional | Object that defines adding options                                                                           |
 
 Supported options:
 
-| Option              | Type    | Notes                                     |
-| --------------------| ------  | ----------------------------------------- |
-| det_prob_threshold  | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
+| Option             | Type   | Notes                                                                                               |
+|--------------------|--------|-----------------------------------------------------------------------------------------------------|
+| det_prob_threshold | string | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
 
 Response:
 
@@ -379,10 +380,10 @@ Response:
 }
   ```
 
-| Field               | string    | Notes                                     |
-| --------------------| ------    | ----------------------------------------- |
-| image_id            | string    | ID of the saved image |
-| subject             | string    | Name or any other person ID   |
+| Field    | string | Notes                       |
+|----------|--------|-----------------------------|
+| image_id | string | ID of the saved image       |
+| subject  | string | Name or any other person ID |
 
 Example:
 
@@ -421,10 +422,10 @@ Response:
 }
 ```
 
-| Field               | string    | Notes                                     |
-| --------------------| ------    | ----------------------------------------- |
-| image_id            | string    | ID of the saved image |
-| subject             | string    | Name or any other person ID   |
+| Field    | string | Notes                       |
+|----------|--------|-----------------------------|
+| image_id | string | ID of the saved image       |
+| subject  | string | Name or any other person ID |
 
 Example:
 
@@ -444,9 +445,9 @@ faceCollection.list()
 
 Removes image(s) according to their given subject.
 
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| subject         | string | optional | Name or any other person ID. If empty deletes all images in the face collection                      |
+| Argument | Type   | Required | Notes                                                                           |
+|----------|--------|----------|---------------------------------------------------------------------------------|
+| subject  | string | optional | Name or any other person ID. If empty deletes all images in the face collection |
 
 
 Response:
@@ -457,9 +458,9 @@ Response:
 }
 ```
 
-| Element  | Type    | Description              |
-| -------- | ------- | ------------------------ |
-| deleted  | integer | Number of deleted faces  |
+| Element | Type    | Description             |
+|---------|---------|-------------------------|
+| deleted | integer | Number of deleted faces |
 
 Example:
 
@@ -481,9 +482,9 @@ faceCollection.delete(subject)
 
 Remove image from face collection.
 
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| image_id        | string | required | ID of the saved image                      |
+| Argument | Type   | Required | Notes                 |
+|----------|--------|----------|-----------------------|
+| image_id | string | required | ID of the saved image |
 
 Response:
 
@@ -494,10 +495,48 @@ Response:
 }
   ```
 
-| Field               | string    | Notes                                     |
-| --------------------| ------    | ----------------------------------------- |
-| image_id            | string    | ID of the deleted image |
-| subject             | string    | Name or any other person ID   |
+| Field    | string | Notes                       |
+|----------|--------|-----------------------------|
+| image_id | string | ID of the deleted image     |
+| subject  | string | Name or any other person ID |
+
+Example:
+
+```javascript
+let image_id = "79ed78d8-f015-4947-b297-a24306ebbdad";
+
+faceCollection.delete(image_id)
+    .then(response => {
+        console.log(JSON.stringify(response));
+    })
+    .catch(error => {
+        console.log(`Oops! There is problem ${error}`)
+    })
+```
+
+#### Delete Multiple Examples
+
+```faceCollection.delete_multiple_images(image_ids)```
+
+Remove images from face collection.
+
+| Argument  | Type     | Required | Notes                             |
+|-----------|----------|----------|-----------------------------------|
+| image_ids | string[] | required | IDs of the saved images to delete |
+
+Response:
+
+ ```json
+{
+  "image_id": "string",
+  "subject": "string"
+}
+  ```
+
+| Field    | string | Notes                       |
+|----------|--------|-----------------------------|
+| image_id | string | ID of the deleted image     |
+| subject  | string | Name or any other person ID |
 
 Example:
 
@@ -519,20 +558,20 @@ faceCollection.delete(image_id)
 
 Compares similarities of given image with image from your face collection. 
 
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL, image in BLOB format or image from your local machine |
-| options         | string | optional | Object that defines recognition options   |
+| Argument       | Type   | Required | Notes                                                      |
+|----------------|--------|----------|------------------------------------------------------------|
+| image_location | string | required | URL, image in BLOB format or image from your local machine |
+| options        | string | optional | Object that defines recognition options                    |
 
 Supported options:
 
-| Option              | Type    | Notes                                     |
-| --------------------| ------  | ----------------------------------------- |
-| det_prob_threshold  | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
-| limit               | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0       |
-| prediction_count    | object  | maximum number of subject predictions per face. It returns the most similar subjects. Default value: 1    |
-| face_plugins        | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md)    |
-| status              | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false    |
+| Option             | Type    | Notes                                                                                                                                                                                        |
+|--------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| det_prob_threshold | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0                                                                                          |
+| limit              | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0                                               |
+| prediction_count   | object  | maximum number of subject predictions per face. It returns the most similar subjects. Default value: 1                                                                                       |
+| face_plugins       | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md) |
+| status             | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false                                                                                    |
 
 Response:
 
@@ -582,19 +621,19 @@ Response:
   }
 }
 ```
-| Element                        | Type    | Description                                                  |
-| ------------------------------ | ------- | ------------------------------------------------------------ |
-| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
-| embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| box                            | object  | list of parameters of the bounding box for this face         |
-| probability                    | float   | probability that a found face is actually a face             |
-| x_max, y_max, x_min, y_min     | integer | coordinates of the frame containing the face                 |
-| landmarks                      | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| similarity                     | float   | similarity that on that image predicted person               |
-| execution_time                 | object  | execution time of all plugins                       |
-| plugins_versions               | object  | contains information about plugin versions                       |
+| Element                    | Type    | Description                                                                                                                                                                                                           |
+|----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| age                        | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| gender                     | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| mask                       | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.                                                                  |
+| embedding                  | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                   |
+| box                        | object  | list of parameters of the bounding box for this face                                                                                                                                                                  |
+| probability                | float   | probability that a found face is actually a face                                                                                                                                                                      |
+| x_max, y_max, x_min, y_min | integer | coordinates of the frame containing the face                                                                                                                                                                          |
+| landmarks                  | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled |
+| similarity                 | float   | similarity that on that image predicted person                                                                                                                                                                        |
+| execution_time             | object  | execution time of all plugins                                                                                                                                                                                         |
+| plugins_versions           | object  | contains information about plugin versions                                                                                                                                                                            |
 
 ```javascript
 let image_location = "../images/team.jpg";
@@ -641,9 +680,9 @@ Create a new subject in Face Collection.
 subjects.add(subject)
 ```
 
-| Argument           | Type   | Required | Notes                                                                   |
-| ------------------ | ------ | -------- | ------------------------------------------------------------------------|
-| subject            | string | required | is the name of the subject. It can be any string                        |
+| Argument | Type   | Required | Notes                                            |
+|----------|--------|----------|--------------------------------------------------|
+| subject  | string | required | is the name of the subject. It can be any string |
 
 Response:
 
@@ -653,9 +692,9 @@ Response:
 }
 ```
 
-| Element  | Type   | Description                |
-| -------- | ------ | -------------------------- |
-| subject  | string | is the name of the subject |
+| Element | Type   | Description                |
+|---------|--------|----------------------------|
+| subject | string | is the name of the subject |
 
 ```javascript
 let subjects = recognitionService.getSubjects();
@@ -680,9 +719,9 @@ Response:
 }
 ```
 
-| Element  | Type   | Description                |
-| -------- | ------ | -------------------------- |
-| subjects | array  | the list of subjects in Face Collection |
+| Element  | Type  | Description                             |
+|----------|-------|-----------------------------------------|
+| subjects | array | the list of subjects in Face Collection |
 
 ```javascript
 let subjects = recognitionService.getSubjects();
@@ -697,10 +736,10 @@ Rename existing subject. If a new subject name already exists, subjects are merg
 subjects.rename(subject, new_name)
 ```
 
-| Argument            | Type   | Required | Notes                                                                   |
-| ------------------  | ------ | -------- | ------------------------------------------------------------------------|
-| subject             | string | required | is the name of the subject that will be updated                         |
-| new_name            | string | required | is the name of the subject. It can be any string                        |
+| Argument | Type   | Required | Notes                                            |
+|----------|--------|----------|--------------------------------------------------|
+| subject  | string | required | is the name of the subject that will be updated  |
+| new_name | string | required | is the name of the subject. It can be any string |
 
 Response:
 
@@ -710,9 +749,9 @@ Response:
 }
 ```
 
-| Element  | Type    | Description                |
-| -------- | ------  | -------------------------- |
-| updated  | boolean | failed or success          |
+| Element | Type    | Description       |
+|---------|---------|-------------------|
+| updated | boolean | failed or success |
 
 ```javascript
 let subjects = recognitionService.getSubjects();
@@ -729,9 +768,9 @@ Delete existing subject and all saved faces.
 subjects.delete(subject)
 ```
 
-| Argument           | Type   | Required | Notes                                                                   |
-| ------------------ | ------ | -------- | ------------------------------------------------------------------------|
-| subject            | string | required | is the name of the subject.                                             |
+| Argument | Type   | Required | Notes                       |
+|----------|--------|----------|-----------------------------|
+| subject  | string | required | is the name of the subject. |
 
 Response:
 
@@ -741,9 +780,9 @@ Response:
 }
 ```
 
-| Element  | Type   | Description                |
-| -------- | ------ | -------------------------- |
-| subject  | string | is the name of the subject |
+| Element | Type   | Description                |
+|---------|--------|----------------------------|
+| subject | string | is the name of the subject |
 
 ```javascript
 let subjects = recognitionService.getSubjects();
@@ -768,9 +807,9 @@ Response:
 }
 ```
 
-| Element  | Type    | Description                |
-| -------- | ------  | -------------------------- |
-| deleted  | integer | number of deleted subjects |
+| Element | Type    | Description                |
+|---------|---------|----------------------------|
+| deleted | integer | number of deleted subjects |
 
 ```javascript
 let subjects = recognitionService.getSubjects();
@@ -794,19 +833,19 @@ Face detection service is used for detecting faces in the image.
 Finds all faces on the image.
 The first argument is the image location, it could be a URL or a path on the local machine.
 
-| Argument        | Type   | Required | Notes                                     |
-| --------------- | ------ | -------- | ----------------------------------------- |
-| image_location  | string | required | URL, image in BLOB format or image from your local machine |
-| options         | string | optional | Object that defines detection options   |
+| Argument       | Type   | Required | Notes                                                      |
+|----------------|--------|----------|------------------------------------------------------------|
+| image_location | string | required | URL, image in BLOB format or image from your local machine |
+| options        | string | optional | Object that defines detection options                      |
 
 Supported options:
 
-| Option              | Type    | Notes                                     |
-| --------------------| ------  | ----------------------------------------- |
-| det_prob_threshold  | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
-| limit               | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0       |
-| face_plugins        | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md)    |
-| status              | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false    |
+| Option             | Type    | Notes                                                                                                                                                                                        |
+|--------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| det_prob_threshold | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0                                                                                          |
+| limit              | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0                                               |
+| face_plugins       | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md) |
+| status             | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false                                                                                    |
 
 Response:
 ```json
@@ -852,18 +891,18 @@ Response:
 }
 ```
 
-| Element                        | Type    | Description                                                  |
-| ------------------------------ | ------- | ------------------------------------------------------------ |
-| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
-| embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| box                            | object  | list of parameters of the bounding box for this face (on processedImage) |
-| probability                    | float   | probability that a found face is actually a face (on processedImage)     |
-| x_max, y_max, x_min, y_min     | integer | coordinates of the frame containing the face (on processedImage)         |
-| landmarks                      | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| execution_time                 | object  | execution time of all plugins                       |
-| plugins_versions               | object  | contains information about plugin versions                       |
+| Element                    | Type    | Description                                                                                                                                                                                                           |
+|----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| age                        | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| gender                     | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| mask                       | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.                                                                  |
+| embedding                  | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                   |
+| box                        | object  | list of parameters of the bounding box for this face (on processedImage)                                                                                                                                              |
+| probability                | float   | probability that a found face is actually a face (on processedImage)                                                                                                                                                  |
+| x_max, y_max, x_min, y_min | integer | coordinates of the frame containing the face (on processedImage)                                                                                                                                                      |
+| landmarks                  | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled |
+| execution_time             | object  | execution time of all plugins                                                                                                                                                                                         |
+| plugins_versions           | object  | contains information about plugin versions                                                                                                                                                                            |
 
 Example:
 
@@ -899,20 +938,20 @@ A source image should contain only one face which will be compared to all faces 
 Compares two images provided in arguments. Source image should contain only one face, it will be compared to all faces in the target image.
 The first two arguments are the image location, it could be a URL or a path on the local machine.
 
-| Argument               | Type   | Required | Notes                                     |
-| ---------------------- | ------ | -------- | ----------------------------------------- |
-| source_image_location  | string | required | URL, source image in BLOB format or source image from your local machine  |
-| target_image_location  | string | required | URL, target image in BLOB format or target image from your local machine |
-| options                | string | optional | Object that defines detection options   |
+| Argument              | Type   | Required | Notes                                                                    |
+|-----------------------|--------|----------|--------------------------------------------------------------------------|
+| source_image_location | string | required | URL, source image in BLOB format or source image from your local machine |
+| target_image_location | string | required | URL, target image in BLOB format or target image from your local machine |
+| options               | string | optional | Object that defines detection options                                    |
 
 Supported options:
 
-| Option              | Type    | Notes                                     |
-| --------------------| ------  | ----------------------------------------- |
-| det_prob_threshold  | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0 |
-| limit               | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0       |
-| face_plugins        | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md)    |
-| status              | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false    |
+| Option             | Type    | Notes                                                                                                                                                                                        |
+|--------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| det_prob_threshold | string  | minimum required confidence that a recognized face is actually a face. Value is between 0.0 and 1.0                                                                                          |
+| limit              | integer | maximum number of faces on the image to be recognized. It recognizes the biggest faces first. Value of 0 represents no limit. Default value: 0                                               |
+| face_plugins       | string  | comma-separated slugs of face plugins. If empty, no additional information is returned. [Learn more](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md) |
+| status             | boolean | if true includes system information like execution_time and plugin_version fields. Default value is false                                                                                    |
 
 Response:
 ```json
@@ -993,21 +1032,21 @@ Response:
 }
 ```
 
-| Element                        | Type    | Description                                                  |
-| ------------------------------ | ------- | ------------------------------------------------------------ |
-| source_image_face              | object  | additional info about source image face |
-| face_matches                   | array   | result of face verification |
-| age                            | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| gender                         | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled         |
-| mask                           | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.          |
-| embedding                      | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| box                            | object  | list of parameters of the bounding box for this face         |
-| probability                    | float   | probability that a found face is actually a face             |
-| x_max, y_max, x_min, y_min     | integer | coordinates of the frame containing the face                 |
-| landmarks                      | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled      |
-| similarity                     | float   | similarity between this face and the face on the source image               |
-| execution_time                 | object  | execution time of all plugins                       |
-| plugins_versions               | object  | contains information about plugin versions                       |
+| Element                    | Type    | Description                                                                                                                                                                                                           |
+|----------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| source_image_face          | object  | additional info about source image face                                                                                                                                                                               |
+| face_matches               | array   | result of face verification                                                                                                                                                                                           |
+| age                        | object  | detected age range. Return only if [age plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| gender                     | object  | detected gender. Return only if [gender plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                       |
+| mask                       | object  | detected mask. Return only if [face mask plugin](https://github.com/exadel-inc/CompreFace/blob/master/docs/Face-services-and-plugins.md) is enabled.                                                                  |
+| embedding                  | array   | face embeddings. Return only if [calculator plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled                                                   |
+| box                        | object  | list of parameters of the bounding box for this face                                                                                                                                                                  |
+| probability                | float   | probability that a found face is actually a face                                                                                                                                                                      |
+| x_max, y_max, x_min, y_min | integer | coordinates of the frame containing the face                                                                                                                                                                          |
+| landmarks                  | array   | list of the coordinates of the frame containing the face-landmarks. Return only if [landmarks plugin](https://github.com/exadel-inc/CompreFace/tree/master/docs/Face-services-and-plugins.md#face-plugins) is enabled |
+| similarity                 | float   | similarity between this face and the face on the source image                                                                                                                                                         |
+| execution_time             | object  | execution time of all plugins                                                                                                                                                                                         |
+| plugins_versions           | object  | contains information about plugin versions                                                                                                                                                                            |
 
 Example:
 

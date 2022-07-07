@@ -78,7 +78,7 @@ declare interface FaceCollectionFunctions {
 
     /**
      * Delete multiple images
-     * @param {String} subject
+     * @param {String[]} image_ids
      * @returns {Promise}
      */
     delete_multiple_images<T>(image_ids: string[]): Promise<T>,
