@@ -64,6 +64,7 @@ const recognition_endpoints = {
      * Delete multiple images
      * @param {String} url 
      * @param {String} api_key 
+     * @param {String[]} image_ids
      * @returns {Promise}
      */
      async delete_multiple(url, api_key, image_ids){

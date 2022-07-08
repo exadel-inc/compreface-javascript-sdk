@@ -168,7 +168,7 @@ class RecognitionService {
 
             /**
 			 * Delete multiple images
-			 * @param {String} subject
+			 * @param {String[]} image_ids
 			 * @returns {Promise}
 			 */
 			delete_multiple_images(image_ids) {
