@@ -1213,10 +1213,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@exadel/compreface-js-sdk@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@exadel/compreface-js-sdk/-/compreface-js-sdk-0.6.0.tgz#c7c6825909a810d8d4900c1c43d1ab4e50d6d624"
-  integrity sha512-Rn+hKd4UCFxddk8p9mjGpMO1aporIHCG5YPXx8cKOsD8BjaVSX/9Lv0tZ0bvqNnBGKX/3zsi/7SIVkKnE3PFuA==
+"@exadel/compreface-js-sdk@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@exadel/compreface-js-sdk/-/compreface-js-sdk-1.0.0.tgz#4407973cc521fb692c7e8f6ea94d600e11ef8366"
+  integrity sha512-p5zScpE7fWAMDst2Wo29RasRIWZXfw9ogfO3Cjy24mtM+/QuOI7eZyasaWOTPRiztS5qE/OXRMBAwn4DIULkaQ==
   dependencies:
     axios "^0.21.1"
     form-data "^4.0.0"
@@ -7326,9 +7326,9 @@ minimatch@3.0.4, minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.npmjs.org/minimist/-/minimist-1.2.5.tgz"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
+  integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
 minipass-collect@^1.0.2:
   version "1.0.2"
