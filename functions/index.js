@@ -57,8 +57,8 @@ const common_functions = {
     isPathRelative(path) {
         if(typeof path !== 'string') return false;
         let isAbsolute = /^([A-Za-z]:|\.)/.test(path);
-
-        return isAbsolute;
+        const isLinuxPath = /^\//.test(path);
+        return isAbsolute||isLinuxPath;
     },
 
      /**
